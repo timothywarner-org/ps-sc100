@@ -1,0 +1,127 @@
+#cloud-config
+# vm-glb-arc-host01 -> Azure Arc machine glb-dc-file01, for SC-100 Course 3 Module 2.
+#
+# WHAT THIS DOES. It follows Microsoft's evaluation-only procedure "Evaluate Azure Arc-enabled
+# servers on an Azure virtual machine": stop and mask the Azure guest agent, block the instance
+# metadata endpoints, install the Connected Machine agent, then connect. Two choices are this
+# lab's own, and here's why:
+#   * CONNECTS ITSELF. The lab has no Bastion and no public IP, so nobody signs in to finish an
+#     interactive connect. The agent connects with a service principal that holds only
+#     "Azure Connected Machine Onboarding" on one resource group, with a secret that expires a
+#     day after it's minted. That's also the onboarding method Course 3 Module 1 recommends, so
+#     the lab practices what the course teaches.
+#   * SCRUBS THE SECRET. Every on-disk copy of this file, which carries the secret, is shredded
+#     after the connect attempt, success or failure.
+# Every console line starts with GLOBOMANTICS-ARC, so you can filter the boot log for it.
+#
+# The __PLACEHOLDERS__ are replaced by archost.bicep at deployment time. Nothing here is
+# secret until then.
+#
+# Once the guest agent is masked, Run Command and extensions stop working on this VM, so every
+# result goes to the serial console. Read it through boot diagnostics:
+#   az vm boot-diagnostics get-boot-log -g rg-globomantics-c3m02-host -n vm-glb-arc-host01
+
+write_files:
+  - path: /etc/environment
+    append: true
+    content: |
+      MSFT_ARC_TEST=true
+  # The agent's daemons need the variable too, and systemctl set-environment doesn't survive a
+  # reboot. A manager drop-in does, so the lab can be deallocated between sessions.
+  - path: /etc/systemd/system.conf.d/10-msft-arc-test.conf
+    content: |
+      [Manager]
+      DefaultEnvironment=MSFT_ARC_TEST=true
+  - path: /usr/local/sbin/glb-arc-prep
+    permissions: '0700'
+    content: |
+      #!/bin/bash
+      # One-time preparation and connection. Never 'set -x': the secret must not reach a log.
+      out=/dev/ttyS0
+      report() { echo "GLOBOMANTICS-ARC $*" > "$out" 2>/dev/null; echo "GLOBOMANTICS-ARC $*"; }
+      report "prep begin $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+      export MSFT_ARC_TEST=true
+      systemctl set-environment MSFT_ARC_TEST=true
+      systemctl daemon-reexec
+      systemctl stop walinuxagent
+      systemctl disable walinuxagent
+      systemctl mask walinuxagent
+      report "guest-agent=$(systemctl is-active walinuxagent 2>/dev/null) enabled=$(systemctl is-enabled walinuxagent 2>/dev/null)"
+      ufw --force enable
+      ufw default allow incoming
+      ufw deny out from any to 169.254.169.254
+      ufw deny out from any to 169.254.169.253
+      if curl -s -m 5 -H Metadata:true "http://169.254.169.254/metadata/instance?api-version=2021-02-01" > /dev/null; then
+        report "imds=reachable (NOT blocked)"
+      else
+        report "imds=blocked"
+      fi
+      curl -fsSL -o /tmp/install_linux_azcmagent.sh https://gbl.his.arc.azure.com/azcmagent-linux
+      if bash /tmp/install_linux_azcmagent.sh > /var/log/glb-azcmagent-install.log 2>&1; then
+        report "agent-install=ok version=$(azcmagent version 2>/dev/null | head -n 1)"
+      else
+        report "agent-install=FAILED (see /var/log/glb-azcmagent-install.log)"
+      fi
+      azcmagent check --location __LOCATION__ 2>&1 | sed 's/^/GLOBOMANTICS-ARC check /' > "$out" 2>/dev/null
+      # Connect. The role assignment behind the service principal can take a few minutes to
+      # propagate, so retry rather than fail on the first 403.
+      connected=no
+      for attempt in 1 2 3 4 5; do
+        if azcmagent connect \
+             --service-principal-id "__ARC_SP_APP_ID__" \
+             --service-principal-secret "__ARC_SP_SECRET__" \
+             --tenant-id "__TENANT_ID__" \
+             --subscription-id "__SUBSCRIPTION_ID__" \
+             --resource-group "__ARC_RESOURCE_GROUP__" \
+             --location "__LOCATION__" \
+             --resource-name "__ARC_MACHINE_NAME__" \
+             --tags "course=SC100-C3M02,company=Globomantics,purpose=demo-fixture,role=file-server,dataClass=internal-files,environment=production,site=datacenter" \
+             > /var/log/glb-azcmagent-connect.log 2>&1; then
+          connected=yes; break
+        fi
+        report "connect attempt $attempt failed; retrying in 60s"
+        sleep 60
+      done
+      report "connect=$connected"
+      # Scrub every copy of the user data that carried the secret, whatever the outcome.
+      for f in /var/lib/cloud/instance/user-data.txt /var/lib/cloud/instance/user-data.txt.i \
+               /var/lib/cloud/instances/*/user-data.txt /var/lib/cloud/instances/*/user-data.txt.i \
+               /var/lib/cloud/instances/*/obj.pkl /var/lib/waagent/CustomData /var/lib/waagent/ovf-env.xml; do
+        [ -e "$f" ] && shred -u "$f" 2>/dev/null
+      done
+      sed -i 's/--service-principal-secret "[^"]*"/--service-principal-secret "SCRUBBED"/' /usr/local/sbin/glb-arc-prep
+      report "secret-scrub=done"
+      # Later boots can't reach instance metadata, so stop cloud-init from waiting on it.
+      touch /etc/cloud/cloud-init.disabled
+      report "prep end $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  - path: /usr/local/sbin/glb-arc-status
+    permissions: '0755'
+    content: |
+      #!/bin/bash
+      # Every boot: the Arc agent's view of itself, to the serial console.
+      out=/dev/ttyS0
+      {
+        echo "GLOBOMANTICS-ARC status begin $(hostname) $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+        azcmagent show 2>&1 | grep -E 'Resource Name|Resource Group|Agent Status|Agent Version|Cloud Provider|Last Heartbeat' | sed 's/^/GLOBOMANTICS-ARC status /'
+        echo "GLOBOMANTICS-ARC status guest-agent=$(systemctl is-active walinuxagent 2>/dev/null)"
+        echo "GLOBOMANTICS-ARC status end"
+      } > "$out" 2>/dev/null || true
+  - path: /etc/systemd/system/glb-arc-status.service
+    content: |
+      [Unit]
+      Description=Print the Azure Arc agent status to the serial console
+      After=network-online.target himdsd.service
+      Wants=network-online.target
+
+      [Service]
+      Type=oneshot
+      ExecStartPre=/bin/sleep 60
+      ExecStart=/usr/local/sbin/glb-arc-status
+
+      [Install]
+      WantedBy=multi-user.target
+
+runcmd:
+  - /usr/local/sbin/glb-arc-prep
+  - systemctl daemon-reload
+  - systemctl enable glb-arc-status.service

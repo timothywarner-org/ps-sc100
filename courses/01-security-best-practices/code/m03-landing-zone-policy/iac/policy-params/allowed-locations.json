@@ -1,0 +1,4 @@
+{
+  "listOfAllowedLocations": { "value": [ "eastus2", "eastus" ] },
+  "effect": { "value": "Deny" }
+}

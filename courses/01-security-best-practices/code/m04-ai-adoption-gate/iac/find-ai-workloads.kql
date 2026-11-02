@@ -1,0 +1,31 @@
+// Find every AI workload in your Azure estate, and the one column that says
+// anything about whether somebody approved it.
+//
+// WHERE TO RUN THIS: Azure portal, search "Resource Graph Explorer", paste, Run query.
+// Deploy-C1M04AIWorkload.ps1 -Mode Show runs the same lookup from the command line.
+//
+// WHY RESOURCE GRAPH AND NOT DEFENDER FOR CLOUD. Defender for Cloud's Cloud Security
+// Explorer and inventory read a security graph that publishes on a DAILY snapshot,
+// so a workload you deployed this morning won't appear this afternoon. Resource Graph
+// reads Azure Resource Manager directly and answers in about a second. When you're
+// hunting for what exists RIGHT NOW, use this. When you want posture findings and an
+// AI Bill of Materials, use Defender CSPM and accept the snapshot delay.
+//
+// THE POINT. Look at GovernanceState. It's a TAG. A human typed it. Nothing validates
+// it, nothing requires it, and deleting it changes nothing about whether the workload
+// keeps serving traffic. That's the difference between an inventory and governance,
+// and it's what the module's adoption gate exists to fix.
+resources
+| where type =~ 'microsoft.cognitiveservices/accounts'
+| where resourceGroup =~ 'rg-globomantics-c1m04'
+| project name, kind, location, GovernanceState = tags['governance-state']
+
+// Widen it to your whole estate by deleting the resourceGroup line. Add Azure Machine
+// Learning workspaces by extending the type filter:
+//
+// | where type =~ 'microsoft.cognitiveservices/accounts'
+//      or type =~ 'microsoft.machinelearningservices/workspaces'
+//
+// Make the tag mandatory with the built-in Azure Policy "Require a tag on resources"
+// assigned at a management group with a Deny effect. That gets you a field that's
+// always populated. It doesn't get you a field that's always true.

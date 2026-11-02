@@ -1,0 +1,65 @@
+// SC-100 Course 3, Module 1: exposure graph check for the attack path lab. Read-only.
+// Supports the demo "Follow an attack path to a critical asset".
+//
+// HOW TO USE IT
+//   1. In Query 1, change targetStorage to YOUR storage account name, the one you passed as
+//      TARGET_ST or -TargetStorageAccount. Storage account names are globally unique, so yours
+//      isn't stglobomanticsorders.
+//   2. Paste ONE query at a time into the Microsoft Defender portal > Advanced hunting:
+//        https://security.microsoft.com/v2/advanced-hunting
+//      Query 1 includes its own let statements, so paste all of it together.
+//
+// PREREQUISITES
+//   * Access to Advanced hunting in the Microsoft Defender portal, and the exposure graph tables
+//     ExposureGraphNodes and ExposureGraphEdges. Microsoft Learn's page on querying the
+//     enterprise exposure graph (linked below) covers where they come from.
+//   * The lab deployed at least 24 hours, better 48, earlier. Agentless scanning and attack path
+//     generation run on Defender for Cloud's own cycle.
+//
+// WHY THIS EXISTS: the attack path list only shows a FINISHED path, so an empty list can mean
+// "still loading" or "filtered out". These queries read the hops the graph already holds.
+// Microsoft's example query for internet-exposed, exploitable VMs keys on exposedToInternet
+// and vulnerableToRCE:
+//   https://learn.microsoft.com/security-exposure-management/query-enterprise-exposure-graph
+// A bounded query can miss differently named nodes or indirect relationships. Its empty result
+// isn't proof that another graph surface has no evidence.
+//
+// READING THE RESULT
+//   No VM rows -> run Query 2 before you conclude the graph hasn't picked up the VMs; graph
+//                 names may differ.
+//   A flag of 0 -> the queried property is absent, not proof of no exposure or exploitability.
+//   Complete nodes, flags and edges -> candidate evidence only; open a published attack path
+//                 to confirm it.
+// These queries don't guarantee that Defender publishes a path.
+//
+// COST: running these queries creates nothing. The lab they read is billable, so tear it down
+// with the deploy script's Teardown mode (or MODE=teardown in Cloud Shell) when you're done.
+
+// Query 1: every fixture node, its two exposure flags, and the links between fixture nodes.
+let targetStorage = "your-storage-account-name";   // CHANGE THIS to your storage account name
+let fixture = pack_array("vm-c3m01-web01", "vm-c3m01-web02", "id-globomantics-c3m01-orders", targetStorage);
+// Azure VM graph nodes were observed as FQDNs. Normalize only that node type and keep
+// NodeName in the result so you can spot collisions or unexpected matches.
+let fixtureNodes = ExposureGraphNodes
+| extend FixtureName = iff(NodeLabel =~ "microsoft.compute/virtualmachines", tostring(split(NodeName, ".")[0]), NodeName)
+| where FixtureName in~ (fixture)
+| project NodeId, FixtureName, NodeName, NodeLabel,
+    ExposedToInternet = isnotnull(NodeProperties.rawData.exposedToInternet),
+    VulnerableToRCE = isnotnull(NodeProperties.rawData.vulnerableToRCE);
+let fixtureIds = fixtureNodes | project NodeId;
+fixtureNodes
+| join kind=leftouter (
+    ExposureGraphEdges
+    // Join by graph identity because edge display names need not use resource short names.
+    | where SourceNodeId in (fixtureIds) and TargetNodeId in (fixtureIds)
+    | summarize OutEdges = make_set(strcat(EdgeLabel, " -> ", TargetNodeName)) by SourceNodeId
+  ) on $left.NodeId == $right.SourceNodeId
+| project FixtureName, NodeName, NodeLabel, ExposedToInternet, VulnerableToRCE, OutEdges
+
+// Query 2: catches a VM node whose display name is not the exact resource name
+// (for example, a merged endpoint-device node outside Query 1's VM normalization).
+ExposureGraphNodes
+| where NodeName contains "c3m01"
+| project NodeName, NodeLabel,
+    ExposedToInternet = isnotnull(NodeProperties.rawData.exposedToInternet),
+    VulnerableToRCE   = isnotnull(NodeProperties.rawData.vulnerableToRCE)

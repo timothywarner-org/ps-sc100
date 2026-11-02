@@ -1,0 +1,7 @@
+"ID","STRIDE","Threat","Mitigation","Owner","Acceptance evidence"
+"T-01","Spoofing","Partner supplies another partner ID","Validate token; derive partner context from a trusted claim","App team","Untrusted request identifier cannot change the verified partner"
+"T-02","Elevation of privilege","Partner cancels an order it does not own","Authorize order ownership in the order service","App team","Authenticated partner B cannot cancel partner A order"
+"T-03","Repudiation","Cancellation cannot be attributed to a verified actor","Record actor, partner, order, action, UTC time, outcome and correlation ID; protect audit records","App team and SOC","Authorized cancellation has correlated evidence; a denied attempt has its own outcome"
+"T-04","Tampering","Malformed request changes cancellation behavior","Validate request contract and server-side state transition","App team","Invalid payload rejected without modifying the order"
+"T-05","Information disclosure","Error returns another partner order details","Filter response by authorized scope; avoid sensitive error detail","App team","Rejected operation discloses no other partner record"
+"T-06","Denial of service","Caller repeatedly invokes expensive cancellation checks","Rate control at gateway; bounded backend work","Platform team","Excess calls receive defined throttling behavior in a controlled test"

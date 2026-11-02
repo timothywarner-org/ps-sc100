@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="only light">
+<title>Globomantics: AI adoption gate</title>
+<!--
+  SC-100 Course 1, Module 4 demo: the AI adoption gate, the approval record an
+  architect signs before a model reaches production. Open it in any browser and
+  press F11 for full screen. It makes no network requests, so it works offline.
+
+  WHY THIS SHAPE: Defender for Cloud discovers AI workloads perfectly well. What it
+  cannot record is whether anyone APPROVED one, which data it may touch, where the
+  shared-responsibility line sits, and who owns the risk. This page is the artifact
+  that closes that gap, and its four questions are the four decisions Module 4
+  teaches. The empty risk-owner field on the sanctioned pilot is the whole pivot of
+  the module's practice item: no documented position and no owner means governance
+  leads, not another technical control.
+
+  Copy the questions and throw away the HTML. A Word document, a wiki page or an
+  issue template in the workload's repository works just as well, as long as the
+  questions are fixed, the answers get written down, and a name lands on the last
+  row before the model ships.
+
+  ACCESSIBILITY: no meaning by color alone. Gate state is carried by an explicit
+  WORD plus a distinct SHAPE (filled triangle = met, hollow square = not met,
+  circle = not applicable / not yet assessed), and every decision row names its
+  state in text. Reads correctly in greyscale and to a red/green colorblind viewer.
+
+  Chrome's auto-dark rewrites author colors on pages it judges light; the meta tag
+  alone does not stop it, so html/body are painted explicitly.
+-->
+<style>
+  :root{
+    color-scheme:only light;
+    --darkBlue:#1B526D; --teal:#51B5B1; --tealLight:#BDFEF2;
+    --ink:#212121; --body:#555555; --grey:#9C9C9C; --white:#FFFFFF;
+  }
+  /* Chrome's auto-dark rewrites author colors on pages it decides are light.
+     Painting the surface explicitly keeps this identical in every browser. */
+  html,body{background:#FFFFFF !important; color:#212121 !important;
+    forced-color-adjust:none; -webkit-print-color-adjust:exact; print-color-adjust:exact}
+  *{box-sizing:border-box}
+  html{font-size:clamp(10px, 0.72vh + 0.34vw, 19px)}
+  body{
+    margin:0; padding:1.5rem 2rem;
+    font-family:"Open Sans","Segoe UI",system-ui,sans-serif;
+    min-height:100vh; display:flex; flex-direction:column;
+  }
+  header{border-bottom:3px solid var(--darkBlue); padding-bottom:.7rem; margin-bottom:1rem;
+    display:flex; justify-content:space-between; align-items:flex-end; gap:1rem}
+  .eyebrow{font-size:.8rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--body); margin-bottom:.25rem}
+  h1{margin:0; font-size:1.9rem; font-weight:800; color:var(--darkBlue); line-height:1.15}
+  .rule{text-align:right; font-size:.85rem; color:var(--body); line-height:1.5}
+  .rule strong{color:var(--ink)}
+
+  .legend{display:flex; gap:1.6rem; font-size:.82rem; color:var(--body); margin-bottom:.9rem}
+
+  /* State markers: WORD + SHAPE. Never hue alone. */
+  .mark{display:inline-block; width:.75rem; height:.75rem; margin-right:.3rem;
+    vertical-align:-.03rem; border:2px solid var(--ink)}
+  .mark.met{background:var(--ink); clip-path:polygon(50% 0,100% 100%,0 100%)}  /* triangle */
+  .mark.missing{background:var(--white); border-radius:0}                      /* hollow square */
+  .mark.na{background:var(--ink); border-radius:50%}                           /* filled circle */
+
+  table{width:100%; border-collapse:collapse; margin-bottom:1rem}
+  th{text-align:left; font-size:.76rem; font-weight:700; letter-spacing:.11em;
+    text-transform:uppercase; color:var(--white); background:var(--darkBlue);
+    padding:.6rem .7rem; border:1px solid var(--darkBlue)}
+  td{padding:.6rem .7rem; border:1px solid var(--grey); font-size:.9rem;
+    line-height:1.4; vertical-align:top}
+  tbody tr:nth-child(even){background:#F4F8FA}
+  td.q{font-weight:700; color:var(--darkBlue); width:21%}
+  td.state{width:15%; white-space:nowrap; font-weight:700}
+  .empty{display:inline-block; border-bottom:2px solid var(--ink); min-width:5.5rem;
+    color:var(--body); font-style:normal}
+
+  .verdicts{display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem}
+  .verdict{border:3px solid var(--ink); border-radius:6px; padding:.8rem 1rem}
+  .verdict.blocked{border-style:dashed}
+  .verdict h2{margin:0 0 .35rem; font-size:1.05rem; font-weight:700; color:var(--darkBlue)}
+  .verdict .tag{display:inline-block; font-size:.72rem; font-weight:700; letter-spacing:.13em;
+    text-transform:uppercase; border:2px solid var(--ink); border-radius:3px;
+    padding:.12rem .45rem; margin-bottom:.45rem}
+  .verdict p{margin:0; font-size:.88rem; line-height:1.45; color:var(--body)}
+
+  .rec{border:3px solid var(--teal); border-left-width:12px; background:var(--tealLight);
+    border-radius:6px; padding:.9rem 1.1rem; margin-top:auto}
+  .rec .label{font-size:.78rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--body); margin-bottom:.4rem}
+  .rec p{margin:0; font-size:1.05rem; font-weight:600; line-height:1.45; color:var(--darkBlue)}
+  footer{margin-top:.85rem; padding-top:.55rem; border-top:1px solid var(--grey);
+    font-size:.78rem; color:var(--body); display:flex; justify-content:space-between}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="eyebrow">Globomantics &middot; Module 4 &middot; AI adoption gate</div>
+    <h1>What an architect signs before production</h1>
+  </div>
+  <div class="rule">
+    Gate rule: <strong>all four decisions recorded, or the workload does not ship</strong><br>
+    CAF AI adoption phase: <strong>Strategy and Govern</strong>
+  </div>
+</header>
+
+<div class="legend">
+  <span><span class="mark met"></span>Decision recorded</span>
+  <span><span class="mark missing"></span>Not recorded, blocks the gate</span>
+  <span><span class="mark na"></span>Never submitted for review</span>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Decision required</th>
+      <th>Marketing chatbot</th>
+      <th>State</th>
+      <th>Order-intake AI pilot</th>
+      <th>State</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="q">Data boundary<br><span style="font-weight:400;color:#555">Which data may reach the model</span></td>
+      <td>Customer records already pasted in by staff. No boundary was ever set.</td>
+      <td class="state"><span class="mark na"></span>Not submitted</td>
+      <td>Undecided. Team assumes order metadata only; nothing is written down.</td>
+      <td class="state"><span class="mark missing"></span>Not recorded</td>
+    </tr>
+    <tr>
+      <td class="q">Shared responsibility<br><span style="font-weight:400;color:#555">SaaS, PaaS, or IaaS</span></td>
+      <td>Consumer SaaS. Globomantics holds no contract and sets no terms.</td>
+      <td class="state"><span class="mark na"></span>Not submitted</td>
+      <td>PaaS, on Microsoft Foundry. Line identified and documented.</td>
+      <td class="state"><span class="mark met"></span>Recorded</td>
+    </tr>
+    <tr>
+      <td class="q">Threat model entry<br><span style="font-weight:400;color:#555">Prompt injection, data leakage</span></td>
+      <td>Absent from the threat model. The workload is not on any inventory.</td>
+      <td class="state"><span class="mark na"></span>Not submitted</td>
+      <td>Added to the existing threat model rather than tracked separately.</td>
+      <td class="state"><span class="mark met"></span>Recorded</td>
+    </tr>
+    <tr>
+      <td class="q">SOC integration<br><span style="font-weight:400;color:#555">How AI alerts reach responders</span></td>
+      <td>No telemetry reaches Globomantics at all.</td>
+      <td class="state"><span class="mark na"></span>Not submitted</td>
+      <td>Alerts route to the SIEM. Playbooks not yet updated for AI incidents.</td>
+      <td class="state"><span class="mark missing"></span>Not recorded</td>
+    </tr>
+    <tr>
+      <td class="q">Named risk owner<br><span style="font-weight:400;color:#555">Accountability, per Responsible AI</span></td>
+      <td>None. Nobody knows the workload exists outside marketing.</td>
+      <td class="state"><span class="mark na"></span>Not submitted</td>
+      <td><span class="empty">&nbsp;</span> &nbsp;unassigned</td>
+      <td class="state"><span class="mark missing"></span>Not recorded</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="verdicts">
+  <div class="verdict blocked">
+    <span class="tag">Verdict &middot; dashed border</span>
+    <h2>Marketing chatbot: shadow AI</h2>
+    <p>Never entered the gate. Discovery found it; governance never saw it. Blocking it at
+    the edge moves the same behavior onto phones, so the answer is a sanctioned path plus a
+    policy, not a firewall rule.</p>
+  </div>
+  <div class="verdict">
+    <span class="tag">Verdict &middot; solid border</span>
+    <h2>Order-intake pilot: blocked at gate</h2>
+    <p>Two of five decisions recorded. Better than shadow AI and still not shippable. The
+    data boundary and the risk owner are the two that stop it, and neither is a technical
+    problem.</p>
+  </div>
+</div>
+
+<div class="rec">
+  <div class="label">The recommendation</div>
+  <p>Define AI security objectives and governance policy, then baseline. Both workloads fail
+  on the same two fields, and no content filter, edge block, or detection rule fills either
+  one. Until a named person owns AI risk and the data boundary is written down, every
+  control deployed is enforcing a rule that does not exist yet.</p>
+</div>
+
+<footer>
+  <span>Globomantics &middot; SC-100 Course 1, Module 4 &middot; Design a strategy for secure AI adoption</span>
+  <span>Discovery is not governance</span>
+</footer>
+
+</body>
+</html>

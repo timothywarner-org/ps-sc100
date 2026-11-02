@@ -1,0 +1,99 @@
+[project]
+name = "sc100-study-toolkit"
+version = "2.0.0"
+description = "Build your own SC-100 study knowledge base and MCP server from Microsoft Learn, with a citation on every passage"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Tim Warner" }]
+keywords = ["mcp", "rag", "chroma", "azure-ai-search", "sc-100", "microsoft-learn"]
+
+# ---------------------------------------------------------------------------
+# Runtime dependencies: the LOCAL path only.
+#
+# Lower bounds are pinned to the version that introduced something this code actually
+# uses, not to "whatever was current". An unexplained floor is a floor nobody dares
+# raise; a documented one can be reasoned about.
+#
+# The keyword search (tools/search_keyword.py) and the chunker (tools/chunk_learn.py)
+# need none of these. They run on a bare Python.
+# ---------------------------------------------------------------------------
+dependencies = [
+    # The local vector store. Chroma's default embedding function runs a small sentence
+    # transformer on YOUR machine via ONNX, so the corpus is embedded locally at zero cost
+    # and the same model embeds every query.
+    "chromadb>=0.5.0",
+
+    # MCP server. 2.0 is a BREAKING change from 1.x: mcp.server.fastmcp was removed and
+    # replaced by mcp.server.MCPServer. The server targets spec revision 2026-07-28. Do not
+    # relax this floor to 1.x; the import will not resolve.
+    "mcp>=2.0.0",
+    "pydantic>=2.9.0",
+
+    "python-dotenv>=1.0.1",
+]
+
+# ---------------------------------------------------------------------------
+# Dependency groups (PEP 735).
+#
+#   uv sync                 local path + dev tools (the default)
+#   uv sync --group azure   adds the optional Azure AI Search path
+#   uv sync --no-dev        a clean runtime environment
+# ---------------------------------------------------------------------------
+[dependency-groups]
+azure = [
+    # Entra ID auth for every Azure client. The Bicep sets disableLocalAuth=true on the
+    # search service and the Foundry account, and allowSharedKeyAccess=false on storage,
+    # so there is no key path.
+    "azure-identity>=1.19.0",
+
+    # 11.5 introduced AzureOpenAIVectorizerParameters and VectorizableTextQuery, which are
+    # what let the MCP server send plain text and have Azure embed it.
+    "azure-search-documents>=11.5.0",
+
+    # Document embeddings at ingest time (tools/ingest_azure.py).
+    "openai>=1.54.0",
+
+    # Corpus snapshot archive (tools/sync_corpus.py).
+    "azure-storage-blob>=12.23.0",
+]
+dev = [
+    "ruff>=0.8.0",
+]
+
+[tool.uv]
+# This is a toolkit of scripts, not an installable package.
+package = false
+
+# ---------------------------------------------------------------------------
+# Ruff. Lint and format in one tool, so there is one config and one cache.
+# ---------------------------------------------------------------------------
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+exclude = ["index", "corpus", ".cache", ".venv"]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle
+    "F",    # pyflakes
+    "I",    # import sorting
+    "UP",   # pyupgrade
+    "B",    # bugbear
+    "BLE",  # blind except: every `except Exception` must say why with a noqa comment
+    "SIM",  # simplify
+    "RUF",  # ruff-specific
+]
+ignore = [
+    # These scripts import Azure and Chroma clients lazily inside functions so that
+    # --self-test, --dry-run, and --help all work with no dependencies installed and
+    # no credentials present. That is deliberate, not laziness.
+    "PLC0415",
+    # Long lines inside docstrings carry measurement tables that wrap badly.
+    "E501",
+    # A stopword list written as one split string reads like the word list it is.
+    "SIM905",
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"

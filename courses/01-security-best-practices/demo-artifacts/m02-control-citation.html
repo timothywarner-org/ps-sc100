@@ -1,0 +1,277 @@
+<!doctype html>
+<!--
+  ==========================================================================
+  ##  SCENARIO DATA  ##  THE TWO RESOURCE COUNTS AREN'T MEASURED  ##
+  ==========================================================================
+
+  The two resource counts on this card are Globomantics SCENARIO numbers. They
+  aren't read from any tenant, and the card face labels them "Scenario data"
+  so nobody mistakes them for a measurement.
+
+  To make the card describe your own estate, replace them with the values your
+  Defender for Cloud dashboard reports after an assessment cycle (roughly 12
+  hours after you deploy anything new):
+
+      Microsoft Defender for Cloud
+        > Regulatory compliance
+          > Microsoft cloud security benchmark (v1, the assigned standard)
+            > IM-1: Use centralized identity and authentication system
+              > the resource list under the control, which reads
+                "X of Y resources passed"
+
+  Edit ONE place: the SCENARIO_COUNTS block a few lines below. Every number on
+  this card, including the two inside the closing recommendation sentence, is
+  rendered from it, so a single edit keeps the whole card consistent.
+
+  If you change the numbers, change the "Scenario data" label too. A citation
+  you can't source is worth nothing.
+  ==========================================================================
+-->
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="only light">
+<title>Globomantics: what a cited control looks like</title>
+<!--
+  SC-100 Course 1, Module 2 demo: the control-citation card that closes the demo.
+  Open it in any browser and press F11 for full screen. It makes no network
+  requests, so it works offline. The card is keyed to MCSB v1, which is the GA
+  release and the standard the demo subscription is assessed against.
+
+  ACCESSIBILITY, and this one matters more than usual: Defender for Cloud's own
+  regulatory compliance dashboard signals control state with a GREEN CIRCLE and a
+  RED CIRCLE, which is color-only and unreadable to a colorblind learner. This page
+  deliberately models the alternative: state carried by an explicit WORD plus a
+  distinct SHAPE plus the resource COUNTS, never by hue. That contrast is part of
+  the teaching, not just house style.
+
+  Chrome's auto-dark rewrites author colors on pages it judges light; the meta tag
+  alone does not stop it, so html/body are painted explicitly.
+-->
+<script>
+/* ==========================================================================
+   SCENARIO_COUNTS  -  THE ONLY PLACE TO EDIT THE NUMBERS ON THIS CARD
+   ==========================================================================
+   SCENARIO VALUES. To describe your own estate, replace them with the "X of Y
+   resources passed" figures from Defender for Cloud > Regulatory compliance >
+   MCSB (v1) > IM-1 after an assessment cycle. See the banner comment at the top
+   of this file.
+
+   Both panel rows and the closing recommendation sentence read from here, so
+   one edit keeps every number on the card in agreement.
+   ========================================================================== */
+var SCENARIO_COUNTS = {
+  production: { pass: 31, assessed: 34 },   /* scenario, not measured */
+  plantFloor: { pass:  9, assessed: 17 }    /* scenario, not measured */
+};
+</script>
+
+<style>
+  :root{
+    color-scheme:only light;
+    --darkBlue:#1B526D; --teal:#51B5B1; --tealLight:#BDFEF2;
+    --ink:#212121; --body:#555555; --grey:#9C9C9C; --white:#FFFFFF;
+  }
+  /* Chrome's auto-dark rewrites author colors on pages it decides are light.
+     Painting the surface explicitly keeps this identical in every browser. */
+  html,body{background:#FFFFFF !important; color:#212121 !important;
+    forced-color-adjust:none; -webkit-print-color-adjust:exact; print-color-adjust:exact}
+  *{box-sizing:border-box}
+  html{font-size:clamp(10px, 0.72vh + 0.34vw, 19px)}
+  body{
+    margin:0; padding:1.7rem 2.1rem;
+    font-family:"Open Sans","Segoe UI",system-ui,sans-serif;
+    min-height:100vh; display:flex; flex-direction:column;
+  }
+  header{border-bottom:3px solid var(--darkBlue); padding-bottom:.8rem; margin-bottom:1.2rem}
+  .eyebrow{font-size:.85rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--body); margin-bottom:.3rem}
+  h1{margin:0; font-size:2rem; font-weight:800; color:var(--darkBlue); line-height:1.15}
+
+  .control{border:3px solid var(--darkBlue); border-radius:6px; margin-bottom:1.2rem; overflow:hidden}
+  .control .bar{background:var(--darkBlue); color:var(--white); padding:.65rem 1rem;
+    display:flex; justify-content:space-between; align-items:baseline; gap:1rem}
+  .control .id{font-size:1.35rem; font-weight:800; letter-spacing:.02em}
+  .control .ver{font-size:.85rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+    border:2px solid var(--white); border-radius:3px; padding:.15rem .5rem}
+  .control .name{font-size:1.1rem; font-weight:600; flex:1}
+  .control .body{padding:.9rem 1rem; font-size:.98rem; line-height:1.5; color:var(--body)}
+  .control .body strong{color:var(--ink)}
+
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; margin-bottom:1.2rem}
+  .panel{border:2px solid var(--grey); border-radius:6px; padding:.9rem 1rem}
+  .panel h2{margin:0 0 .7rem; font-size:.85rem; font-weight:700; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--body)}
+  table{width:100%; border-collapse:collapse}
+  td{padding:.4rem 0; font-size:.98rem; border-bottom:1px solid #E4E4E4; line-height:1.4}
+  tr:last-child td{border-bottom:none}
+  td.k{color:var(--body); width:52%}
+  td.v{font-weight:700; text-align:right}
+
+  /* State markers: WORD + SHAPE + COUNTS. Never hue alone. This is the deliberate
+     contrast with the portal dashboard's green/red circles. */
+  .mark{display:inline-block; width:.8rem; height:.8rem; margin-right:.35rem;
+    vertical-align:-.05rem; border:2px solid var(--ink)}
+  .mark.pass{background:var(--ink); clip-path:polygon(50% 0,100% 100%,0 100%)}  /* triangle */
+  .mark.fail{background:var(--white); border-radius:0}                          /* hollow square */
+  .cloud{display:flex; justify-content:space-between; align-items:center;
+    padding:.55rem 0; border-bottom:1px solid #E4E4E4; font-size:1rem}
+  .cloud:last-of-type{border-bottom:none}
+  .cloud .who{font-weight:700}
+  .cloud .num{font-variant-numeric:tabular-nums; font-weight:700}
+  .cloud .num span{color:var(--body); font-weight:400}
+
+  .rec{border:3px solid var(--teal); border-left-width:12px; background:var(--tealLight);
+    border-radius:6px; padding:1rem 1.2rem; margin-top:auto}
+  .rec .label{font-size:.82rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--body); margin-bottom:.45rem}
+  .rec p{margin:0; font-size:1.15rem; font-weight:600; line-height:1.45; color:var(--darkBlue)}
+  footer{margin-top:1rem; padding-top:.6rem; border-top:1px solid var(--grey);
+    font-size:.82rem; color:var(--body); display:flex; justify-content:space-between}
+
+  /* Scenario-data chip. Bordered and worded, so the warning does not depend on hue. */
+  .scenariotag{display:inline-block; border:2px solid var(--ink); border-radius:3px;
+    padding:.05rem .4rem; margin-left:.45rem; font-size:.68rem; font-weight:700;
+    letter-spacing:.09em; text-transform:uppercase; color:var(--ink); white-space:nowrap}
+
+  /* Marker legend. A shape with no key is as unreadable as a color with no key,
+     so the two markers are spelled out using the same elements the rows use. */
+  .legend{font-size:.8rem; line-height:1.7; color:var(--body); margin:-.3rem 0 .65rem}
+  .legend b{color:var(--ink)}
+
+  /* Explicit status WORD beside every marker. Word + shape + count, never hue. */
+  .state{display:inline-block; min-width:4.2rem; font-weight:800; font-size:.8rem;
+    letter-spacing:.07em; text-transform:uppercase; color:var(--ink)}
+
+  /* Provenance footnote. Deliberately small: it backs the audit trail,
+     so it supports the card rather than competing with it. */
+  .notes{margin-top:.9rem; padding:.55rem .8rem; border:1px solid var(--grey);
+    border-radius:4px; font-size:.72rem; line-height:1.55; color:var(--body)}
+  .notes b{color:var(--ink)}
+  .notes code{font-family:Consolas,"Courier New",monospace; font-size:.95em}
+
+  /* Loud, unmissable failure state if the count script does not run. A visible
+     warning band beats blank numbers that look like a broken card. */
+  .jswarn{border:3px solid var(--ink); padding:.6rem .8rem; margin:0 0 1rem;
+    font-weight:700; font-size:.95rem; color:var(--ink)}
+</style>
+</head>
+<body>
+
+<noscript>
+  <p class="jswarn">The scenario counts on this card did not render, because JavaScript is
+  disabled. Turn JavaScript on for this file and the numbers appear.</p>
+</noscript>
+
+<header>
+  <div class="eyebrow">Globomantics &middot; Module 2 &middot; What a cited control looks like</div>
+  <h1>The recommendation, with its receipts</h1>
+</header>
+
+<div class="control">
+  <div class="bar">
+    <span class="id">IM-1</span>
+    <span class="name">Use centralized identity and authentication system</span>
+    <span class="ver">MCSB v1 &middot; GA</span>
+  </div>
+  <div class="body">
+    <strong>Security principle.</strong> Use a centralized identity and authentication system to
+    govern your organization's identities and authentications for cloud and non-cloud resources.
+    <strong>Azure guidance.</strong> Standardize on Microsoft Entra ID to govern identity and
+    authentication for Microsoft cloud resources, for your organization's own applications, and
+    for enterprise identities synchronized from Active Directory, and avoid local authentication
+    methods wherever the service supports Entra ID.
+  </div>
+</div>
+
+<div class="grid">
+  <div class="panel">
+    <h2>Mappings you inherit, not build</h2>
+    <table>
+      <tr><td class="k">NIST SP 800-53 r4</td><td class="v">AC-2, AC-3, IA-2, IA-8</td></tr>
+      <tr><td class="k">PCI-DSS v3.2.1</td><td class="v">7.2, 8.3</td></tr>
+      <tr><td class="k">CIS Controls v8</td><td class="v">6.7, 12.5</td></tr>
+      <tr><td class="k">Benchmark version</td><td class="v">MCSB v1 (GA)</td></tr>
+    </table>
+  </div>
+
+  <div class="panel">
+    <h2>Assessed state <span class="scenariotag">Scenario data &middot; not live tenant state</span></h2>
+    <p class="legend">
+      <span class="mark pass"></span><b>Filled triangle = MEETS.</b>
+      <span class="mark fail"></span><b>Hollow square = GAP.</b>
+      Every row states its status as a word as well as a shape. Nothing here is carried by
+      color: read the words and the counts, not the colors.
+    </p>
+    <div class="cloud">
+      <span class="who"><span class="mark pass"></span><span class="state">Meets</span> Production workloads &middot; rg-globomantics</span>
+      <span class="num"><span class="js-prod-pass"></span> <span>of <span class="js-prod-total"></span> assessed pass</span></span>
+    </div>
+    <div class="cloud">
+      <span class="who"><span class="mark fail"></span><span class="state">Gap</span> Plant-floor workloads &middot; rg-globomantics</span>
+      <span class="num"><span class="js-plant-pass"></span> <span>of <span class="js-plant-total"></span> assessed pass</span></span>
+    </div>
+    <div class="cloud">
+      <span class="who">Assessment cadence</span>
+      <span class="num"><span>continuous, no manual mapping</span></span>
+    </div>
+  </div>
+</div>
+
+<div class="rec">
+  <div class="label">The recommendation</div>
+  <p>Extend centralized identity to the plant-floor scope. Control IM-1 in benchmark
+  version 1 (GA) maps to NIST AC-2, passing on <span class="js-plant-pass"></span> of
+  <span class="js-plant-total"></span> assessed resources there against
+  <span class="js-prod-pass"></span> of <span class="js-prod-total"></span> in production.
+  The gap is one scope, not one framework, and the auditor's NIST mapping came with the
+  control rather than from a spreadsheet.</p>
+</div>
+
+<div class="notes">
+  <b>Sources, checked 2026-08-31.</b> The control name, security principle, Azure guidance and
+  framework mappings above are quoted from
+  <code>learn.microsoft.com/security/benchmark/azure/mcsb-identity-management#im-1</code>, the
+  MCSB <b>v1</b> control page. v1 is generally available and is the standard assigned to this
+  subscription; MCSB v2 is in preview, and its IM-1 carries a different name
+  (&ldquo;Centralize identity and authentication while ensuring isolation&rdquo;) against
+  different framework identifiers and different framework versions. That is why this card prints
+  its benchmark version on its face. <b>Naming note:</b> the v1 page still writes &ldquo;Azure
+  Active Directory (Azure AD)&rdquo;; the current product name is <b>Microsoft Entra ID</b>, and
+  a document lagging a product name is exactly why you cite a control number and a version rather
+  than a product name. <b>Documentation inconsistency worth knowing:</b> the v2 policy-mapping
+  page,
+  <code>learn.microsoft.com/security/benchmark/azure/mcsb-v2-controls-policy-mapping#im-1</code>,
+  still heads IM-1 with v1's name, so even inside v2 the naming isn't settled.
+  <b>Scope of the claim:</b> Microsoft's own caveat is that these mappings &ldquo;only indicate
+  that you can use specific Azure features to fully or partially address a security control
+  requirement&rdquo; and that such implementation &ldquo;doesn't necessarily translate to the
+  full compliance.&rdquo; This card maps to those controls and contributes evidence toward them.
+  It isn't proof of compliance.
+</div>
+
+<footer>
+  <span>Globomantics &middot; SC-100 Course 1, Module 2 &middot; Cite controls, not preferences</span>
+  <span>Control numbers are meaningless without their version</span>
+</footer>
+
+<script>
+/* Renders SCENARIO_COUNTS into every place a number appears on the card.
+   Kept deliberately plain - no optional chaining, no template literals - so it
+   behaves identically in whatever browser build you open it with. */
+(function () {
+  var c = window.SCENARIO_COUNTS;
+  if (!c || !c.production || !c.plantFloor) { return; }
+  function fill(className, value) {
+    var nodes = document.getElementsByClassName(className);
+    for (var i = 0; i < nodes.length; i++) { nodes[i].textContent = String(value); }
+  }
+  fill('js-prod-pass',   c.production.pass);
+  fill('js-prod-total',  c.production.assessed);
+  fill('js-plant-pass',  c.plantFloor.pass);
+  fill('js-plant-total', c.plantFloor.assessed);
+})();
+</script>
+
+</body>
+</html>

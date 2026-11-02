@@ -1,0 +1,17 @@
+// Three fictional observations that exercise the investigation surface without touching a device.
+// The fixed seed time bounds the exercise: rows exist only for 30 minutes after it, so the rule
+// fires once and then goes quiet. Replaying it is a deliberate redeploy with a new seed.
+let FixtureStart = datetime(__FIXTURE_START__);
+datatable(OffsetMinutes:int, Signal:string, Observation:string)
+[
+  0, 'Identity example', 'Unfamiliar sign-in for planner-04',
+  1, 'Endpoint example', 'Unexpected process observed on eng-ws-17',
+  2, 'Cloud application example', 'ERP draft-order activity for the same account'
+]
+| extend TimeGenerated = FixtureStart + OffsetMinutes * 1m
+| where TimeGenerated between (ago(30m) .. now())
+| extend AccountName='planner-04', AccountSuffix='globomantics.example',
+         HostName='eng-ws-17', DnsDomain='globomantics.example',
+         ResourceUrl='https://erp.globomantics.example/orders',
+         EvidenceType='SYNTHETIC TRAINING DATA - NO CONNECTOR TELEMETRY'
+| project TimeGenerated, Signal, Observation, AccountName, AccountSuffix, HostName, DnsDomain, ResourceUrl, EvidenceType

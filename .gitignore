@@ -1,0 +1,34 @@
+# Secrets and local config: never commit a filled-in .env
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+
+# Toolkit data: Microsoft Learn content downloads to YOUR disk and is never redistributed
+toolkit/corpus/*
+!toolkit/corpus/README.md
+toolkit/index/
+toolkit/.cache/
+
+# Azure and Bicep build output
+*.parameters.local.json
+.azure/
+bin/
+obj/
+
+# Editors and OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Office lock files and logs
+~$*
+*.log

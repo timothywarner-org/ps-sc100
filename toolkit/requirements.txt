@@ -1,0 +1,36 @@
+# SC-100 study toolkit -- Python dependencies for the LOCAL path.
+#
+# FALLBACK ONLY. pyproject.toml + uv.lock are canonical.
+#
+#   preferred:  uv sync                          # exact locked versions, reproducible
+#   fallback:   pip install -r requirements.txt  # floors only, resolution may drift
+#
+# This file is kept for environments without uv. It carries the same floors as
+# pyproject.toml but none of the transitive pins, so two machines installing from it can
+# end up with different dependency sets, which is precisely what uv.lock prevents.
+#
+# You need NONE of these for the five-minute path: tools/search_keyword.py and
+# tools/chunk_learn.py run on the standard library alone.
+
+# --- Local vector store ---------------------------------------------------------
+# Chroma's default embedding function runs a sentence transformer locally via ONNX.
+# The first run downloads the model (about 80 MB); after that it works fully offline.
+chromadb>=0.5.0
+
+# --- MCP server -----------------------------------------------------------------
+# 2.0 is a BREAKING change from 1.x: mcp.server.fastmcp was removed in favour of
+# mcp.server.MCPServer. The server targets spec revision 2026-07-28. Do not relax this
+# floor to 1.x; the import will not resolve.
+mcp>=2.0.0
+pydantic>=2.9.0
+
+# --- Configuration --------------------------------------------------------------
+python-dotenv>=1.0.1
+
+# --- OPTIONAL: the Azure AI Search path -----------------------------------------
+# Only if you deploy infra/. With uv:  uv sync --group azure
+# With pip, uncomment these four lines:
+# azure-identity>=1.19.0
+# azure-search-documents>=11.5.0
+# openai>=1.54.0
+# azure-storage-blob>=12.23.0

@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="only light">
+<title>Globomantics: governance gap scorecard</title>
+<!--
+  SC-100 Course 1, Module 3 demo: the governance gap scorecard. Open it in any
+  browser and press F11 for full screen. It makes no network requests, so it
+  works offline.
+
+  WHY THIS SHAPE: the module teaches that gap analysis runs at three scopes and that
+  the fix has to be sent to the scope that owns it -- strategy gaps to the CAF Secure
+  methodology, platform gaps to landing zone controls, workload gaps to the WAF
+  review. Applying a workload fix to a platform problem is the classic wrong answer.
+  Sorting the scorecard BY SCOPE makes that structure the visible organizing idea
+  rather than a sentence somebody has to remember.
+
+  ACCESSIBILITY: no meaning by color alone. Status carries an explicit WORD plus a
+  distinct SHAPE (filled triangle / filled circle / hollow square), and the scope
+  column is a text label, never a hue. Reads correctly in greyscale and to a
+  red/green colorblind viewer.
+
+  Chrome's auto-dark rewrites author colors on pages it judges light; the meta tag
+  alone does not stop it, so html/body are painted explicitly.
+-->
+<style>
+  :root{
+    color-scheme:only light;
+    --darkBlue:#1B526D; --teal:#51B5B1; --tealLight:#BDFEF2;
+    --ink:#212121; --body:#555555; --grey:#9C9C9C; --white:#FFFFFF;
+  }
+  /* Chrome's auto-dark rewrites author colors on pages it decides are light.
+     Painting the surface explicitly keeps this identical in every browser. */
+  html,body{background:#FFFFFF !important; color:#212121 !important;
+    forced-color-adjust:none; -webkit-print-color-adjust:exact; print-color-adjust:exact}
+  *{box-sizing:border-box}
+  html{font-size:clamp(10px, 0.72vh + 0.34vw, 19px)}
+  body{
+    margin:0; padding:1.5rem 2rem;
+    font-family:"Open Sans","Segoe UI",system-ui,sans-serif;
+    min-height:100vh; display:flex; flex-direction:column;
+  }
+  header{border-bottom:3px solid var(--darkBlue); padding-bottom:.7rem; margin-bottom:.9rem;
+    display:flex; justify-content:space-between; align-items:flex-end; gap:1rem}
+  .eyebrow{font-size:.8rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--body); margin-bottom:.25rem}
+  h1{margin:0; font-size:1.85rem; font-weight:800; color:var(--darkBlue); line-height:1.15}
+  .rule{text-align:right; font-size:.88rem; color:var(--body); line-height:1.5}
+  .rule strong{color:var(--ink)}
+
+  .legend{display:flex; gap:1.6rem; font-size:.85rem; color:var(--body); margin-bottom:.8rem}
+
+  table{width:100%; border-collapse:collapse; margin-bottom:.9rem}
+  th{text-align:left; font-size:.76rem; font-weight:700; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--white); background:var(--darkBlue);
+    padding:.55rem .7rem; border:1px solid var(--darkBlue)}
+  td{padding:.5rem .7rem; border:1px solid var(--grey); font-size:.92rem;
+    line-height:1.4; vertical-align:top}
+  tbody tr:nth-child(even){background:#F4F8FA}
+
+  /* Scope is a WORD, never a color. The band letter repeats it for scanning. */
+  td.scope{width:13%; white-space:nowrap; font-weight:700; color:var(--darkBlue)}
+  td.scope .band{display:inline-block; border:2px solid var(--darkBlue); border-radius:3px;
+    font-size:.7rem; padding:0 .3rem; margin-right:.3rem; vertical-align:.05rem}
+  td.gap{width:26%; font-weight:700}
+  td.mech{width:30%}
+  td.owner{width:16%; color:var(--body)}
+  td.status{width:15%; white-space:nowrap; font-weight:700}
+
+  /* State markers: SHAPE + WORD. Never hue alone. */
+  .mark{display:inline-block; width:.78rem; height:.78rem; margin-right:.35rem;
+    vertical-align:-.04rem; border:2px solid var(--ink)}
+  .mark.closed{background:var(--ink); clip-path:polygon(50% 0,100% 100%,0 100%)}  /* triangle */
+  .mark.progress{background:var(--ink); border-radius:50%}                        /* circle */
+  .mark.open{background:var(--white); border-radius:0}                            /* hollow square */
+
+  .finding{border:3px solid var(--teal); border-left-width:12px; background:var(--tealLight);
+    border-radius:6px; padding:.9rem 1.1rem; margin-top:auto}
+  .finding .label{font-size:.78rem; font-weight:700; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--body); margin-bottom:.4rem}
+  .finding p{margin:0; font-size:1.08rem; font-weight:600; line-height:1.45; color:var(--darkBlue)}
+  footer{margin-top:.8rem; padding-top:.5rem; border-top:1px solid var(--grey);
+    font-size:.78rem; color:var(--body); display:flex; justify-content:space-between}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="eyebrow">Globomantics &middot; Module 3 &middot; Governance gap scorecard</div>
+    <h1>Send every gap to the scope that owns it</h1>
+  </div>
+  <div class="rule">
+    Sequenced by <strong>blast radius</strong>, not by volume<br>
+    Platform gaps outrank single-workload gaps
+  </div>
+</header>
+
+<div class="legend">
+  <span><span class="mark closed"></span>Closed</span>
+  <span><span class="mark progress"></span>In progress</span>
+  <span><span class="mark open"></span>Open, unaddressed</span>
+  <span>Scope bands: <strong>S</strong> strategy &middot; <strong>P</strong> platform &middot; <strong>W</strong> workload</span>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Scope</th>
+      <th>Gap</th>
+      <th>Mechanism that closes it</th>
+      <th>Assessed against</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="scope"><span class="band">S</span>Strategy</td>
+      <td class="gap">No decision on record for who may create a subscription</td>
+      <td class="mech">CAF Secure methodology, govern phase. A documented position with a named owner</td>
+      <td class="owner">CAF</td>
+      <td class="status"><span class="mark open"></span>Open</td>
+    </tr>
+    <tr>
+      <td class="scope"><span class="band">S</span>Strategy</td>
+      <td class="gap">Security objectives are not tied to business outcomes</td>
+      <td class="mech">CAF Secure methodology, strategy phase. Objectives mapped to stated business drivers</td>
+      <td class="owner">CAF</td>
+      <td class="status"><span class="mark progress"></span>In progress</td>
+    </tr>
+    <tr>
+      <td class="scope"><span class="band">P</span>Platform</td>
+      <td class="gap">Regulated data lands in ungoverned subscriptions</td>
+      <td class="mech">Deny assignment at the management group, inherited by every subscription including future ones</td>
+      <td class="owner">Landing zone</td>
+      <td class="status"><span class="mark closed"></span>Closed</td>
+    </tr>
+    <tr>
+      <td class="scope"><span class="band">P</span>Platform</td>
+      <td class="gap">Existing non-compliant resources predate the assignment</td>
+      <td class="mech">Remediation backlog. Deny gates new resources, it does not reach backward</td>
+      <td class="owner">Landing zone</td>
+      <td class="status"><span class="mark progress"></span>In progress</td>
+    </tr>
+    <tr>
+      <td class="scope"><span class="band">P</span>Platform</td>
+      <td class="gap">Telemetry destination and triage owner undefined</td>
+      <td class="mech">Platform landing zone, centralized logging and monitoring, with a named triage team</td>
+      <td class="owner">Landing zone</td>
+      <td class="status"><span class="mark open"></span>Open</td>
+    </tr>
+    <tr>
+      <td class="scope"><span class="band">W</span>Workload</td>
+      <td class="gap">Order pipeline has no design review on record</td>
+      <td class="mech">Well-Architected Review against the security checklist for the workload</td>
+      <td class="owner">WAF</td>
+      <td class="status"><span class="mark open"></span>Open</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="finding">
+  <div class="label">Architectural finding</div>
+  <p>The subscription problem was a platform gap, not a process failure. Globomantics was
+  not missing a feature; it was missing a decision and an inheritance path to carry it.
+  Policy assigned at the management group now reaches subscriptions that do not exist yet.
+  The remaining strategy gaps are decisions, not controls, and no amount of tooling closes
+  them.</p>
+</div>
+
+<footer>
+  <span>Globomantics &middot; SC-100 Course 1, Module 3 &middot; Govern with Azure landing zones</span>
+  <span>Match the fix to the scope that owns it</span>
+</footer>
+
+</body>
+</html>

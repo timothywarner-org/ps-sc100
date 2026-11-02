@@ -1,0 +1,51 @@
+{
+  "status": "Design model in plain JSON. The same elements, flows and trust boundary as ConnectedEquipment-API.tm7, for readers without the Threat Modeling Tool.",
+  "system": "Globomantics Connected Equipment API",
+  "operation": "Cancel an existing order",
+  "entities": [
+    {
+      "id": "partner",
+      "type": "external-entity",
+      "label": "Partner client"
+    },
+    {
+      "id": "api",
+      "type": "process",
+      "label": "API Management"
+    },
+    {
+      "id": "orders",
+      "type": "process",
+      "label": "Order service"
+    },
+    {
+      "id": "store",
+      "type": "data-store",
+      "label": "Order records"
+    }
+  ],
+  "flows": [
+    {
+      "name": "Cancel request",
+      "from": "partner",
+      "to": "api",
+      "data": "HTTPS cancellation request and bearer token"
+    },
+    {
+      "name": "Forwarded cancel request",
+      "from": "api",
+      "to": "orders",
+      "data": "Validated caller context and cancellation command"
+    },
+    {
+      "name": "Order status write",
+      "from": "orders",
+      "to": "store",
+      "data": "Authorized order state change"
+    }
+  ],
+  "trustBoundary": "Between API Management and the Order service",
+  "scope": "Logical design, not a deployed Azure inventory",
+  "primaryThreat": "Repudiation on Forwarded cancel request (threat-register.csv row T-03)",
+  "chosenRequirement": "Record the verified actor, partner, order, action, UTC time and outcome for every cancellation attempt, allowed or denied, in an audit store operators can't edit."
+}

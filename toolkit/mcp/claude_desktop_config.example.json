@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "sc100-knowledge": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "<path-to-your-clone>/toolkit",
+        "run",
+        "python",
+        "mcp/server.py"
+      ]
+    }
+  }
+}

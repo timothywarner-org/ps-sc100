@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="only light">
+<title>Globomantics: recovery architecture decision record</title>
+<!--
+  SC-100 Course 1, Module 1 demo: the recovery architecture decision record that
+  closes the demo. Open it in any browser and press F11 for full screen. It makes
+  no network requests, so it works offline.
+
+  WHY THIS SHAPE: a decision record pairs each REQUIREMENT with the control that
+  answers it. Azure Backup doesn't encode a restore sequence, so a page that
+  compared "required restore order" against "configured backup priority" would
+  teach something the platform doesn't do. Requirement-to-control is the reasoning
+  an SC-100 item actually rewards.
+
+  ACCESSIBILITY: no meaning by color alone. Status is carried by an explicit word
+  ("Gap" / "Recommended" / "In place") AND a shape marker, never by hue. The status
+  column reads correctly in greyscale and to a red/green colorblind viewer.
+-->
+<style>
+  :root{
+    color-scheme:only light;
+    --darkBlue:#1B526D; --teal:#51B5B1; --tealLight:#BDFEF2;
+    --ink:#212121; --body:#555555; --grey:#9C9C9C; --white:#FFFFFF;
+  }
+  /* Chrome's auto-dark rewrites author colors on pages it decides are light.
+     Declaring the scheme on BOTH html and body, and repainting the surface
+     explicitly, keeps the artifact identical in every browser. */
+  html,body{background:#FFFFFF !important; color:#212121 !important;
+    forced-color-adjust:none; -webkit-print-color-adjust:exact; print-color-adjust:exact}
+  *{box-sizing:border-box}
+  html{font-size:clamp(10px, 0.72vh + 0.34vw, 19px)}
+  body{
+    margin:0; padding:1.74rem 3.06rem;
+    font-family:"Open Sans","Segoe UI",system-ui,sans-serif;
+    color:var(--ink); background:var(--white);
+    min-height:100vh; display:flex; flex-direction:column;
+  }
+  header{border-bottom:3px solid var(--darkBlue); padding-bottom:0.74rem; margin-bottom:1.24rem;
+    display:flex; justify-content:space-between; align-items:flex-end}
+  .eyebrow{font-size:0.87rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--body); margin-bottom:.3.10rem}
+  h1{margin:0; font-size:1.98rem; font-weight:800; color:var(--darkBlue); line-height:1.15}
+  .asset-line{text-align:right; font-size:0.93rem; color:var(--body); line-height:1.6}
+  .asset-line strong{color:var(--ink)}
+
+  table{width:100%; border-collapse:collapse; margin-bottom:1.24rem}
+  th{
+    text-align:left; font-size:0.81rem; font-weight:700; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--white); background:var(--darkBlue);
+    padding:0.68rem .8.10rem; border:1px solid var(--darkBlue);
+  }
+  td{padding:0.78rem .8.10rem; border:1px solid var(--grey); font-size:1.00rem; line-height:1.45; vertical-align:top}
+  tbody tr:nth-child(even){background:#F4F8FA}
+  td.req{font-weight:700; color:var(--darkBlue); width:23%}
+  td.ctrl{width:31%}
+  td.why{color:var(--body)}
+  td.status{width:15%; white-space:nowrap; font-weight:700}
+
+  /* Status markers: SHAPE + WORD, never color alone. */
+  .mark{display:inline-block; width:0.93rem; height:0.93rem; margin-right:.40.50rem;
+    vertical-align:-.9.30rem; border:2px solid var(--ink)}
+  .mark.gap{background:var(--white); border-radius:0}            /* hollow square */
+  .mark.rec{background:var(--ink); border-radius:50%}            /* filled circle */
+  .mark.have{background:var(--ink); border-radius:0;
+    clip-path:polygon(50% 0,100% 100%,0 100%)}                   /* filled triangle */
+
+  .legend{display:flex; gap:1.80rem; font-size:0.87rem; color:var(--body); margin-bottom:1.24rem}
+  .finding{border:3px solid var(--teal); border-left-width:12px; background:var(--tealLight);
+    border-radius:6px; padding:1.18rem 1.44rem; margin-top:auto}
+  .finding .label{font-size:0.84rem; font-weight:700; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--body); margin-bottom:.4.96rem}
+  .finding p{margin:0; font-size:1.24rem; font-weight:600; line-height:1.45; color:var(--darkBlue)}
+  footer{margin-top:1.12rem; padding-top:0.62rem; border-top:1px solid var(--grey);
+    font-size:0.81rem; color:var(--body); display:flex; justify-content:space-between}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="eyebrow">Globomantics &middot; Recovery architecture decision record</div>
+    <h1>Customer-order data protection</h1>
+  </div>
+  <div class="asset-line">
+    Asset: <strong>Azure Blob Storage, order documents</strong><br>
+    Business criticality: <strong>High</strong> &middot; RTO <strong>40 h stated</strong> &middot; RPO <strong>24 h</strong>
+  </div>
+</header>
+
+<div class="legend">
+  <span><span class="mark have"></span>In place</span>
+  <span><span class="mark rec"></span>Recommended</span>
+  <span><span class="mark gap"></span>Gap, unaddressed</span>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Requirement</th>
+      <th>Control</th>
+      <th>Why this control answers it</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="req">Recover from accidental deletion</td>
+      <td class="ctrl">Operational backup on the storage account</td>
+      <td class="why">Point-in-time restore, soft delete, versioning, change feed, delete lock. Fast, because the data never moved.</td>
+      <td class="status"><span class="mark have"></span>In place</td>
+    </tr>
+    <tr>
+      <td class="req">Survive a compromised administrator</td>
+      <td class="ctrl">Blob vaulted backup in a Backup vault</td>
+      <td class="why">Copies the data offsite into storage Azure Backup manages. Operational backup stays on the account the attacker controls.</td>
+      <td class="status"><span class="mark rec"></span>Recommended</td>
+    </tr>
+    <tr>
+      <td class="req">Recovery points cannot be deleted</td>
+      <td class="ctrl">Vault immutability, enabled then locked</td>
+      <td class="why">Set at the vault, enforced across every protected instance in it. Locked adds WORM and is irreversible.</td>
+      <td class="status"><span class="mark rec"></span>Recommended</td>
+    </tr>
+    <tr>
+      <td class="req">No single admin can weaken protection</td>
+      <td class="ctrl">Multi-User Authorization with a Resource Guard</td>
+      <td class="why">Shortening retention or disabling soft delete needs a second approver the first cannot overrule. Guard sits in a separate subscription.</td>
+      <td class="status"><span class="mark rec"></span>Recommended</td>
+    </tr>
+    <tr>
+      <td class="req">The 40-hour tolerance is real</td>
+      <td class="ctrl">Timed restore test, to an alternate account</td>
+      <td class="why">Vaulted restore targets a different storage account, so the recovery plan has to account for that before the incident, not during it.</td>
+      <td class="status"><span class="mark gap"></span>Gap</td>
+    </tr>
+    <tr>
+      <td class="req">Backup operators are not standing admins</td>
+      <td class="ctrl">Just-in-time privileged access</td>
+      <td class="why">Phase two work. Raises the cost of stealing a credential; does not stop the admin who legitimately holds one.</td>
+      <td class="status"><span class="mark gap"></span>Gap</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="finding">
+  <div class="label">Architectural finding</div>
+  <p>Globomantics protects this data against deletion, not against an attacker. Operational backup lives on the account a compromised administrator already controls, and the 40-hour tolerance has never been measured. Fund vaulted backup with immutability and multi-user authorization first, then test the restore against the stated RTO.</p>
+</div>
+
+<footer>
+  <span>Prepared for the security steering committee &middot; SC-100 Course 1, Module 1</span>
+  <span>Every control answers a stated requirement</span>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SC-100 Domain 1 Study Links</title>
+<meta name="description" content="Microsoft documentation for every SC-100 Domain 1 exam objective covered in Designing Solutions with Security Best Practices.">
+<style>
+/* Self-contained. No network calls, so it works offline.
+   No meaning carried by color alone: every status is a word in a bordered chip.
+   Accent axis is brass/teal (blue-yellow), which reads for color vision deficiency. */
+
+:root{
+  --ground:#F2F5F5; --surface:#FFFFFF; --surface-2:#E9EEEE;
+  --ink:#131A1E; --ink-2:#3E4C52; --ink-3:#63757C;
+  --rule:#D2DBDB; --rule-2:#BCC8C8;
+  --brass:#8A5A0B; --brass-bg:#F6EBD6;
+  --teal:#14424E; --teal-bg:#DCE9EC; --slate-bg:#E4EAEA;
+  --focus:#0B5A6B;
+  --mast-bg:#14424E; --mast-ink:#EDF4F5; --mast-dim:#C6DDE2; --mast-eye:#9FC9D2; --mast-link:#FFD79A;
+  --sans:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --disp:"Segoe UI Variable Display","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono","Cascadia Code",SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0D1316; --surface:#141C20; --surface-2:#1B252A;
+    --ink:#E2EAEB; --ink-2:#B2C1C5; --ink-3:#8598A0;
+    --rule:#26343A; --rule-2:#35474E;
+    --brass:#E3A84E; --brass-bg:#33260F;
+    --teal:#7DBDCC; --teal-bg:#122A31; --slate-bg:#1C262B;
+    --focus:#7DD3E8;
+    --mast-bg:#0F2A32; --mast-ink:#E4EFF1; --mast-dim:#A8C6CD; --mast-eye:#7FA9B3; --mast-link:#E3A84E;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0D1316; --surface:#141C20; --surface-2:#1B252A;
+  --ink:#E2EAEB; --ink-2:#B2C1C5; --ink-3:#8598A0;
+  --rule:#26343A; --rule-2:#35474E;
+  --brass:#E3A84E; --brass-bg:#33260F;
+  --teal:#7DBDCC; --teal-bg:#122A31; --slate-bg:#1C262B;
+  --focus:#7DD3E8;
+  --mast-bg:#0F2A32; --mast-ink:#E4EFF1; --mast-dim:#A8C6CD; --mast-eye:#7FA9B3; --mast-link:#E3A84E;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:1rem}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+body{margin:0;background:var(--ground);color:var(--ink);
+  font-family:var(--sans);font-size:15.5px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:var(--brass)}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.skip{position:absolute;left:-9999px}
+.skip:focus{left:.5rem;top:.5rem;z-index:99;background:var(--surface);color:var(--ink);
+  padding:.6rem 1rem;border:2px solid var(--focus)}
+
+/* masthead */
+.mast{background:var(--mast-bg);color:var(--mast-ink);border-bottom:3px solid var(--brass)}
+.mast__in{max-width:80rem;margin:0 auto;padding:1.6rem 1.6rem 1.4rem;
+  display:flex;flex-wrap:wrap;gap:.9rem 2rem;align-items:baseline;justify-content:space-between}
+.eyebrow{font-family:var(--mono);font-size:.66rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--mast-eye);margin:0 0 .45rem;display:flex;flex-wrap:wrap;gap:.3rem .8rem}
+.mast h1{font-family:var(--disp);font-size:clamp(1.35rem,2.6vw,1.95rem);line-height:1.15;
+  margin:0 0 .3rem;font-weight:650;letter-spacing:-.015em;text-wrap:balance}
+.mast .sub{margin:0;color:var(--mast-dim);font-size:.92rem}
+.byline{font-size:.88rem;color:var(--mast-dim);text-align:right;flex:none}
+.byline b{display:block;color:var(--mast-ink);font-weight:650;font-size:.98rem;margin-bottom:.15rem}
+.byline a{color:var(--mast-link);text-decoration:none;border-bottom:1px solid currentColor}
+@media (max-width:44rem){.byline{text-align:left}}
+
+/* shell */
+.shell{max-width:80rem;margin:0 auto;padding:0 1.6rem 4rem;min-width:0;
+  display:grid;grid-template-columns:17rem minmax(0,1fr);gap:2.75rem;align-items:start}
+@media (max-width:62rem){.shell{grid-template-columns:1fr;gap:1.25rem}}
+@media (max-width:44rem){.shell{padding:0 1rem 3rem}}
+
+/* rail */
+.rail{position:sticky;top:1rem;max-height:calc(100vh - 2rem);overflow-y:auto;padding:1.4rem 0 2rem}
+@media (max-width:62rem){.rail{position:static;max-height:none;
+  border-bottom:1px solid var(--rule);padding-bottom:1.2rem}}
+.rail h2{font-family:var(--mono);font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--ink-3);margin:0 0 .6rem;font-weight:600}
+.search input{width:100%;font-family:var(--sans);font-size:.9rem;padding:.5rem .6rem;
+  background:var(--surface);color:var(--ink);border:1px solid var(--rule-2)}
+.filters{display:flex;flex-wrap:wrap;gap:.35rem;margin:.55rem 0}
+.filters button{font-family:var(--mono);font-size:.66rem;letter-spacing:.05em;padding:.28rem .48rem;
+  background:var(--surface);color:var(--ink-2);border:1px solid var(--rule-2);cursor:pointer}
+.filters button:hover{border-color:var(--brass);color:var(--brass)}
+.filters button[aria-pressed="true"]{background:var(--brass);color:var(--ground);
+  border-color:var(--brass);font-weight:700}
+.count{font-family:var(--mono);font-size:.72rem;color:var(--ink-3);margin:0 0 1.5rem;
+  font-variant-numeric:tabular-nums}
+.nav{list-style:none;margin:0;padding:0;font-size:.85rem}
+.nav__grp{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;color:var(--ink-3);
+  margin:1rem 0 .3rem;text-transform:uppercase}
+.nav__grp:first-child{margin-top:0}
+.nav a{display:flex;gap:.55rem;text-decoration:none;color:var(--ink-2);padding:.26rem 0;line-height:1.35}
+.nav a:hover{color:var(--brass)}
+.nav .oid{font-family:var(--mono);font-size:.74rem;color:var(--brass);flex:none;
+  font-variant-numeric:tabular-nums}
+.nav .n{margin-left:auto;font-family:var(--mono);font-size:.7rem;color:var(--ink-3);flex:none}
+
+/* main */
+main{padding-top:1.4rem;min-width:0}
+.intro{margin:0 0 2.25rem;padding-bottom:1.25rem;border-bottom:1px solid var(--rule)}
+.intro p{margin:0 0 .55rem;max-width:70ch;color:var(--ink-2);font-size:.94rem}
+.intro p:last-child{margin-bottom:0}
+.intro strong{color:var(--ink)}
+.key{display:flex;flex-wrap:wrap;gap:.4rem .9rem;margin-top:.85rem;font-size:.8rem;color:var(--ink-3);
+  align-items:center}
+.key span.lbl{font-family:var(--mono);font-size:.65rem;letter-spacing:.11em;text-transform:uppercase}
+
+/* functional group */
+.grp{margin:0 0 3rem}
+.grp__h{border-top:3px solid var(--ink);padding-top:.75rem;margin:0 0 1.5rem}
+.grp__id{font-family:var(--mono);font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--brass);font-weight:700;margin-bottom:.2rem}
+.grp__h h2{font-family:var(--disp);font-size:clamp(1.15rem,2.2vw,1.5rem);line-height:1.2;
+  margin:0 0 .25rem;font-weight:650;letter-spacing:-.014em;text-wrap:balance}
+.grp__meta{margin:0;font-family:var(--mono);font-size:.73rem;color:var(--ink-3)}
+
+/* objective */
+.obj{margin:0 0 2.1rem;scroll-margin-top:1rem}
+.obj__h{margin:0 0 .55rem;padding-bottom:.4rem;border-bottom:1px solid var(--rule-2);
+  display:flex;flex-wrap:wrap;gap:.3rem .7rem;align-items:baseline}
+.obj__id{font-family:var(--mono);font-size:.68rem;letter-spacing:.09em;color:var(--ground);
+  background:var(--teal);padding:.14rem .4rem;font-weight:700;flex:none}
+.obj__t{font-family:var(--disp);font-size:1rem;font-weight:640;line-height:1.3;
+  letter-spacing:-.006em;min-width:0;flex:1 1 22rem}
+.obj__where{margin-left:auto;font-family:var(--mono);font-size:.7rem;color:var(--ink-3);flex:none}
+
+/* link rows */
+.links{display:grid}
+.lk{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.2rem .8rem;
+  padding:.42rem 0;border-bottom:1px solid var(--rule);align-items:baseline}
+.lk:last-child{border-bottom:none}
+.lk:hover{background:var(--surface)}
+.lk__a{font-weight:600;color:var(--brass);text-decoration:none;min-width:0;overflow-wrap:anywhere}
+.lk__a:hover{text-decoration:underline;text-underline-offset:2.5px}
+.lk__d{grid-column:1;color:var(--ink-3);font-size:.85rem;line-height:1.4;min-width:0;
+  overflow-wrap:anywhere}
+.lk__chips{grid-column:2;grid-row:1;display:flex;gap:.3rem;flex-wrap:wrap;justify-content:flex-end}
+.lk__n{grid-column:1/-1;font-size:.8rem;color:var(--ink-2);background:var(--surface-2);
+  padding:.3rem .55rem;border-left:2px solid var(--rule-2);margin-top:.2rem;
+  line-height:1.4;overflow-wrap:anywhere}
+.plus{font-family:var(--mono);font-size:.7rem;color:var(--ink-3);text-decoration:none;
+  border-bottom:1px dotted var(--rule-2);margin-left:.5rem;white-space:nowrap;
+  display:inline-block;max-width:100%}
+.plus:hover{color:var(--brass);border-bottom-color:var(--brass)}
+@media (max-width:44rem){
+  .lk{grid-template-columns:minmax(0,1fr)}
+  .lk__chips{grid-column:1;grid-row:auto;justify-content:flex-start;margin-top:.15rem}
+}
+
+/* chips: bordered + labelled, never color-only */
+.chip{font-family:var(--mono);font-size:.6rem;letter-spacing:.09em;font-weight:700;
+  padding:.08rem .34rem;border:1px solid;white-space:nowrap;flex:none}
+.chip--preview{color:var(--brass);border-color:var(--brass);background:var(--brass-bg)}
+.chip--renamed{color:var(--teal);border-color:var(--teal);background:var(--teal-bg)}
+.chip--dated{color:var(--ink-2);border-color:var(--rule-2);background:var(--slate-bg)}
+.chip--ext{color:var(--ink-2);border:1px dashed var(--rule-2);background:transparent}
+
+.lk[hidden],.obj[hidden],.grp[hidden]{display:none}
+.empty{padding:2rem 0;color:var(--ink-3)}
+
+footer{border-top:1px solid var(--rule);margin-top:1rem;padding:1.4rem 0 0;
+  color:var(--ink-3);font-size:.82rem}
+footer p{margin:0 0 .45rem;max-width:70ch}
+
+@media print{
+  :root{--ground:#fff;--surface:#fff;--surface-2:#f5f5f5;--ink:#000;--ink-2:#222;--ink-3:#555;
+        --rule:#bbb;--rule-2:#999;--brass:#000;--teal:#000;
+        --mast-bg:#fff;--mast-ink:#000;--mast-dim:#333;--mast-eye:#333;--mast-link:#000}
+  .rail,.skip{display:none!important}
+  .shell{grid-template-columns:1fr;padding:0}
+  .mast{border-bottom:2px solid #000}
+  .lk,.obj{break-inside:avoid}
+  .lk__a::after{content:" " attr(href);font-family:var(--mono);font-size:.66rem;color:#555;
+    font-weight:400;word-break:break-all}
+  .grp{break-before:page}
+  .grp:first-of-type{break-before:auto}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the links</a>
+
+<header class="mast">
+  <div class="mast__in">
+    <div>
+      <p class="eyebrow"><span>SC-100 Microsoft Cybersecurity Architect</span><span>Exam Domain 1</span></p>
+      <h1>Designing Solutions with Security Best Practices</h1>
+      <p class="sub">Microsoft documentation for all 13 objectives this course covers.</p>
+    </div>
+    <p class="byline"><b>Tim Warner</b><a href="https://techtrainertim.com">TechTrainerTim.com</a></p>
+  </div>
+</header>
+
+<div class="shell">
+  <nav class="rail" aria-label="Objectives">
+    <h2>Find a link</h2>
+    <div class="search">
+      <label class="skip" for="q">Filter links</label>
+      <input id="q" type="search" placeholder="Filter&hellip;" autocomplete="off">
+    </div>
+    <div class="filters" role="group" aria-label="Filter by status">
+      <button type="button" data-flag="preview" aria-pressed="false">PREVIEW</button>
+      <button type="button" data-flag="renamed" aria-pressed="false">RENAMED</button>
+      <button type="button" data-flag="dated" aria-pressed="false">DATED</button>
+    </div>
+    <p class="count" id="count" aria-live="polite">169 links</p>
+    <h2>Objectives</h2>
+    <ul class="nav"><li class="nav__grp">Group 1.1</li><li><a href="#o1-1-1"><span class="oid">1.1.1</span><span>Design a security strategy to support business resiliency &hellip;</span><span class="n">14</span></a></li><li><a href="#o1-1-2"><span class="oid">1.1.2</span><span>Design solutions for business continuity and disaster reco&hellip;</span><span class="n">6</span></a></li><li><a href="#o1-1-3"><span class="oid">1.1.3</span><span>Design solutions for mitigating ransomware attacks, includ&hellip;</span><span class="n">25</span></a></li><li><a href="#o1-1-4"><span class="oid">1.1.4</span><span>Evaluate solutions for security updates</span><span class="n">6</span></a></li><li class="nav__grp">Group 1.2</li><li><a href="#o1-2-1"><span class="oid">1.2.1</span><span>Design solutions that align with best practices for cybers&hellip;</span><span class="n">14</span></a></li><li><a href="#o1-2-2"><span class="oid">1.2.2</span><span>Design solutions that align with best practices for protec&hellip;</span><span class="n">7</span></a></li><li><a href="#o1-2-3"><span class="oid">1.2.3</span><span>Design AI solutions that align to the Microsoft Cloud Secu&hellip;</span><span class="n">11</span></a></li><li><a href="#o1-2-4"><span class="oid">1.2.4</span><span>Design solutions that align with the Zero Trust adoption f&hellip;</span><span class="n">8</span></a></li><li class="nav__grp">Group 1.3</li><li><a href="#o1-3-1"><span class="oid">1.3.1</span><span>Design a new or evaluate an existing strategy for security&hellip;</span><span class="n">13</span></a></li><li><a href="#o1-3-2"><span class="oid">1.3.2</span><span>Recommend solutions for security and governance based on t&hellip;</span><span class="n">3</span></a></li><li><a href="#o1-3-3"><span class="oid">1.3.3</span><span>Design solutions for implementing and governing security b&hellip;</span><span class="n">22</span></a></li><li><a href="#o1-3-4"><span class="oid">1.3.4</span><span>Design a strategy for secure AI adoption</span><span class="n">25</span></a></li><li><a href="#o1-3-5"><span class="oid">1.3.5</span><span>Design a DevSecOps process that aligns with best practices&hellip;</span><span class="n">15</span></a></li></ul>
+  </nav>
+
+  <main id="main">
+    <div class="intro">
+      <p>Domain 1 is worth <strong>20 to 25 percent</strong> of your SC-100 score, and this course covers all 13 of its objectives. Every link below goes to Microsoft's own documentation for the objective it sits under.</p>
+      <p>Objectives are quoted from the skills measured list dated <strong>July 28, 2026</strong>. Each one names the module and clip that covers it, so you can go back to the video and forward to the source.</p>
+      <p class="key">
+        <span class="lbl">Flags</span>
+        <span><span class="chip chip--preview">PREVIEW</span> not generally available yet</span>
+        <span><span class="chip chip--renamed">RENAMED</span> the old name still circulates</span>
+        <span><span class="chip chip--dated">DATED</span> a retirement or effective date applies</span>
+      </p>
+    </div>
+
+    <section class="grp" id="g1-1">
+<header class="grp__h"><div class="grp__id">Functional group 1.1</div>
+<h2>Design a resiliency strategy for ransomware and other attacks based on Microsoft Security Best Practices</h2>
+<p class="grp__meta">4 objectives &middot; 51 links</p></header>
+<section class="obj" id="o1-1-1">
+<div class="obj__h"><span class="obj__id">1.1.1</span>
+<span class="obj__t">Design a security strategy to support business resiliency goals, including identifying and prioritizing threats to business-critical assets</span>
+<span class="obj__where">Module 1, Clip 1</span></div>
+<div class="links"><div class="lk" data-s="sc-100 exam blueprint, domain 1: design solutions that align with security best practices and priorities domain 1 weighting and the exact objective wording skills measured as of july 28, 2026, when the domain weightings were revised. study guide for exam sc-100: microsoft cybersecurity architect https://learn.microsoft.com/credentials/certifications/resources/study-guides/sc-100" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/credentials/certifications/resources/study-guides/sc-100" target="_blank" rel="noopener">SC-100 exam blueprint, Domain 1: Design solutions that align with security best practices and priorities</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Domain 1 weighting and the exact objective wording</span>
+<p class="lk__n">Skills measured as of July 28, 2026, when the domain weightings were revised.</p></div><div class="lk" data-s="microsoft certification exam scoring and the exam sandbox the 700 scaled passing score, and the exam sandbox exam scoring and score reports https://learn.microsoft.com/credentials/certifications/exam-scoring-reports" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/credentials/certifications/exam-scoring-reports" target="_blank" rel="noopener">Microsoft certification exam scoring and the exam sandbox</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The 700 scaled passing score, and the exam sandbox</span>
+</div><div class="lk" data-s="microsoft learn training module: design a resiliency strategy for common cyberthreats like ransomware the free learn module, and where restore priority comes from design a resiliency strategy for ransomware and other attacks based on microsoft security best practices https://learn.microsoft.com/training/modules/design-resiliency-strategy-common-cyberthreats-like-ransomware/" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/training/modules/design-resiliency-strategy-common-cyberthreats-like-ransomware/" target="_blank" rel="noopener">Microsoft Learn training module: Design a resiliency strategy for common cyberthreats like ransomware</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The free Learn module, and where restore priority comes from</span>
+</div><div class="lk" data-s="microsoft security exposure management what it actually covers, and the licensing that turns it on what is microsoft security exposure management? https://learn.microsoft.com/security-exposure-management/microsoft-security-exposure-management" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/security-exposure-management/microsoft-security-exposure-management" target="_blank" rel="noopener">Microsoft Security Exposure Management</a>
+<span class="lk__chips"></span>
+<span class="lk__d">What it actually covers, and the licensing that turns it on</span>
+</div><div class="lk" data-s="critical asset management and the four criticality levels (very high, high, medium, low) the four criticality levels and what each one means overview and how-to give conflicting nav paths. the four levels are on the how-to. overview of critical asset management https://learn.microsoft.com/security-exposure-management/critical-asset-management" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/security-exposure-management/critical-asset-management" target="_blank" rel="noopener">Critical asset management and the four criticality levels (Very high, High, Medium, Low)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The four criticality levels and what each one means</span>
+<p class="lk__n">Overview and how-to give conflicting nav paths. The four levels are on the how-to.</p></div><div class="lk" data-s="predefined and custom critical asset classification rules what ships in the box: 150-plus predefined classifications predefined classifications https://learn.microsoft.com/security-exposure-management/predefined-classification-rules-and-levels" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/security-exposure-management/predefined-classification-rules-and-levels" target="_blank" rel="noopener">Predefined and custom critical asset classification rules</a>
+<span class="lk__chips"></span>
+<span class="lk__d">What ships in the box: 150-plus predefined classifications</span>
+</div><div class="lk" data-s="critical asset protection in microsoft defender for cloud (bidirectional criticality sync) how criticality syncs both ways with defender for cloud critical assets protection in microsoft defender for cloud https://learn.microsoft.com/azure/defender-for-cloud/critical-assets-protection" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/defender-for-cloud/critical-assets-protection" target="_blank" rel="noopener">Critical asset protection in Microsoft Defender for Cloud (bidirectional criticality sync)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">How criticality syncs both ways with Defender for Cloud</span>
+</div><div class="lk" data-s="defender cspm plan and the unified asset inventory why an asset must be discovered before it can be classified from october 27, 2026, foundational cspm is opt-in for new azure subscriptions. what is cloud security posture management (cspm) https://learn.microsoft.com/azure/defender-for-cloud/concept-cloud-security-posture-management" data-f="dated">
+<a class="lk__a" href="https://learn.microsoft.com/azure/defender-for-cloud/concept-cloud-security-posture-management" target="_blank" rel="noopener">Defender CSPM plan and the unified asset inventory</a>
+<span class="lk__chips"><span class="chip chip--dated">DATED</span></span>
+<span class="lk__d">Why an asset must be discovered before it can be classified</span>
+<p class="lk__n">From October 27, 2026, Foundational CSPM is opt-in for new Azure subscriptions.</p></div><div class="lk" data-s="microsoft defender portal (security.microsoft.com) which console owns exposure management and xdr settings microsoft defender portal https://learn.microsoft.com/defender-xdr/microsoft-365-defender-portal" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/defender-xdr/microsoft-365-defender-portal" target="_blank" rel="noopener">Microsoft Defender portal (security.microsoft.com)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Which console owns exposure management and XDR settings</span>
+</div><div class="lk" data-s="the two security resilience goals: enable the business to innovate and adapt safely, and limit likelihood and impact before, during, and after attacks the before, during, and after cycle the two goals sit in support business resiliency https://learn.microsoft.com/training/modules/design-resiliency-strategy-common-cyberthreats-like-ransomware/2-support-business-resiliency" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/training/modules/design-resiliency-strategy-common-cyberthreats-like-ransomware/2-support-business-resiliency" target="_blank" rel="noopener">The two security resilience goals: enable the business to innovate and adapt safely, and limit likelihood and impact before, during, and after attacks</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The before, during, and after cycle the two goals sit in</span>
+</div><div class="lk" data-s="microsoft&#x27;s three-phase ransomware plan: prepare your recovery plan, limit the scope of the damage, make it hard to get in why prepare-your-recovery comes before make-it-hard-to-get-in quickly protect your organization against ransomware attacks https://learn.microsoft.com/security/ransomware/protect-against-ransomware" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/security/ransomware/protect-against-ransomware" target="_blank" rel="noopener">Microsoft&#x27;s three-phase ransomware plan: prepare your recovery plan, limit the scope of the damage, make it hard to get in</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Why prepare-your-recovery comes before make-it-hard-to-get-in</span>
+</div><div class="lk" data-s="azure blob storage how blobs, containers, and storage accounts fit together introduction to azure blob storage https://learn.microsoft.com/azure/storage/blobs/storage-blobs-introduction" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/storage/blobs/storage-blobs-introduction" target="_blank" rel="noopener">Azure Blob Storage</a>
+<span class="lk__chips"></span>
+<span class="lk__d">How blobs, containers, and storage accounts fit together</span>
+</div><div class="lk" data-s="microsoft entra conditional access conditional access as a ransomware containment control what is conditional access? https://learn.microsoft.com/entra/identity/conditional-access/overview" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/entra/identity/conditional-access/overview" target="_blank" rel="noopener">Microsoft Entra Conditional Access</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Conditional Access as a ransomware containment control</span>
+</div><div class="lk" data-s="privileged access workstations and secure workstation deployment the device tiers, enterprise through privileged securing devices as part of the privileged access story https://learn.microsoft.com/security/privileged-access-workstations/privileged-access-devices" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/security/privileged-access-workstations/privileged-access-devices" target="_blank" rel="noopener">Privileged access workstations and secure workstation deployment</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The device tiers, Enterprise through Privileged</span>
+</div></div></section><section class="obj" id="o1-1-2">
+<div class="obj__h"><span class="obj__id">1.1.2</span>
+<span class="obj__t">Design solutions for business continuity and disaster recovery (BCDR), including secure backup and restore for hybrid and multicloud environments</span>
+<span class="obj__where">Module 1, Clip 2</span></div>
+<div class="links"><div class="lk" data-s="the prioritized restore tier list: identity, human life, financial, product or service enablement, security systems why your prioritized backup list is also your restore list backup and restore plan to protect against ransomware https://learn.microsoft.com/azure/security/fundamentals/backup-plan-to-protect-against-ransomware" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/security/fundamentals/backup-plan-to-protect-against-ransomware" target="_blank" rel="noopener">The prioritized restore tier list: identity, human life, financial, product or service enablement, security systems</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Why your prioritized backup list is also your restore list</span>
+</div><div class="lk" data-s="active directory forest recovery the forest recovery procedure, step by step active directory forest recovery guide https://learn.microsoft.com/windows-server/identity/ad-ds/manage/forest-recovery-guide/ad-forest-recovery-guide" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/windows-server/identity/ad-ds/manage/forest-recovery-guide/ad-forest-recovery-guide" target="_blank" rel="noopener">Active Directory forest recovery</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The forest recovery procedure, step by step</span>
+</div><div class="lk" data-s="microsoft entra connect what breaks downstream while directory sync is offline entra connect sync is in maintenance mode. cloud sync is the path for new deployments. what is microsoft entra connect? https://learn.microsoft.com/entra/identity/hybrid/connect/whatis-azure-ad-connect" data-f="dated">
+<a class="lk__a" href="https://learn.microsoft.com/entra/identity/hybrid/connect/whatis-azure-ad-connect" target="_blank" rel="noopener">Microsoft Entra Connect</a>
+<span class="lk__chips"><span class="chip chip--dated">DATED</span></span>
+<span class="lk__d">What breaks downstream while directory sync is offline</span>
+<p class="lk__n">Entra Connect Sync is in maintenance mode. Cloud Sync is the path for new deployments.</p></div><div class="lk" data-s="microsoft entra privileged identity management how activation, approval, and time limits actually work what is microsoft entra privileged identity management? https://learn.microsoft.com/entra/id-governance/privileged-identity-management/pim-configure" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/entra/id-governance/privileged-identity-management/pim-configure" target="_blank" rel="noopener">Microsoft Entra Privileged Identity Management</a>
+<span class="lk__chips"></span>
+<span class="lk__d">How activation, approval, and time limits actually work</span>
+</div><div class="lk" data-s="standing privilege versus just-in-time privileged access why a permanent admin account never stops being a risk establish a privileged access strategy https://learn.microsoft.com/security/zero-trust/security-adoption-discipline-identity-access-privileged-strategy" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/security/zero-trust/security-adoption-discipline-identity-access-privileged-strategy" target="_blank" rel="noopener">Standing privilege versus just-in-time privileged access</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Why a permanent admin account never stops being a risk</span>
+</div><div class="lk" data-s="securing privileged access: microsoft&#x27;s privileged access strategy and rapid modernization plan why privilege leads the design, and the modernization plan privileged access: strategy https://learn.microsoft.com/security/privileged-access-workstations/privileged-access-strategy" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/security/privileged-access-workstations/privileged-access-strategy" target="_blank" rel="noopener">Securing privileged access: Microsoft&#x27;s privileged access strategy and rapid modernization plan</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Why privilege leads the design, and the modernization plan</span>
+</div></div></section><section class="obj" id="o1-1-3">
+<div class="obj__h"><span class="obj__id">1.1.3</span>
+<span class="obj__t">Design solutions for mitigating ransomware attacks, including prioritization of BCDR and privileged access</span>
+<span class="obj__where">Module 1, Clip 3</span></div>
+<div class="links"><div class="lk" data-s="azure backup how vaults, policies, and backup instances relate what is the azure backup service? https://learn.microsoft.com/azure/backup/backup-overview" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/backup/backup-overview" target="_blank" rel="noopener">Azure Backup</a>
+<span class="lk__chips"></span>
+<span class="lk__d">How vaults, policies, and backup instances relate</span>
+</div><div class="lk" data-s="backup vault and recovery services vault: the two azure backup vault resource types why the workload picks the vault, not the other way round backup vaults overview https://learn.microsoft.com/azure/backup/backup-vault-overview" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/backup/backup-vault-overview" target="_blank" rel="noopener">Backup vault and Recovery Services vault: the two Azure Backup vault resource types</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Why the workload picks the vault, not the other way round</span>
+</div><div class="lk" data-s="operational versus vaulted backup tiers for azure blob storage where each tier stores data, and why one policy sets both overview of azure blob backup https://learn.microsoft.com/azure/backup/blob-backup-overview" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/backup/blob-backup-overview" target="_blank" rel="noopener">Operational versus vaulted backup tiers for Azure Blob Storage</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Where each tier stores data, and why one policy sets both</span>
+</div><div class="lk" data-s="operational backup for blobs: point-in-time restore, blob soft delete, versioning, change feed, and delete locks (storage account data protection blade) the four operational controls, and how they depend on each other data protection overview https://learn.microsoft.com/azure/storage/blobs/data-protection-overview" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/storage/blobs/data-protection-overview" target="_blank" rel="noopener">Operational backup for blobs: point-in-time restore, blob soft delete, versioning, change feed, and delete locks (storage account Data protection blade)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The four operational controls, and how they depend on each other</span>
+</div><div class="lk" data-s="configure and manage vaulted backup for azure blob storage (backup instances blade) vault, policy, and backup instance, step by step configure and manage backup for azure blobs using azure backup https://learn.microsoft.com/azure/backup/blob-backup-configure-manage" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/backup/blob-backup-configure-manage" target="_blank" rel="noopener">Configure and manage vaulted backup for Azure Blob Storage (Backup instances blade)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Vault, policy, and backup instance, step by step</span>
+</div><div class="lk" data-s="restoring azure blobs from vaulted backup: alternate storage account only, and the usererrororiginallocationrestorenotsupported error why a vaulted blob restore cannot target the source account restore azure blobs https://learn.microsoft.com/azure/backup/blob-restore" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/backup/blob-restore" target="_blank" rel="noopener">Restoring Azure Blobs from vaulted backup: alternate storage account only, and the UserErrorOriginalLocationRestoreNotSupported error</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Why a vaulted blob restore cannot target the source account</span>
+</div><div class="lk" data-s="storage account backup contributor role on the restore target the role the vault identity needs on source and on target azure built-in roles for storage https://learn.microsoft.com/azure/role-based-access-control/built-in-roles/storage#storage-account-backup-contributor" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/role-based-access-control/built-in-roles/storage#storage-account-backup-contributor" target="_blank" rel="noopener">Storage account backup contributor role on the restore target</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The role the vault identity needs on source and on target</span>
+</div><div class="lk" data-s="azure rbac for azure backup: backup contributor, backup operator, and backup reader (backup vault access control (iam) &gt; role assignments) what each of the three roles can and cannot do to backups use azure role-based access control to manage azure backup recovery points https://learn.microsoft.com/azure/backup/backup-rbac-rs-vault" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/backup/backup-rbac-rs-vault" target="_blank" rel="noopener">Azure RBAC for Azure Backup: Backup Contributor, Backup Operator, and Backup Reader (Backup vault Access control (IAM) &gt; Role assignments)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">What each of the three roles can and cannot do to backups</span>
+</div><div class="lk" data-s="immutable vaults for azure backup: disabled, enabled, and enabled and locked (worm) immutability at vault scope, and the three states locked-vault worm is ga for recovery services vaults, still preview for backup vaults. immutable vault for azure backup https://learn.microsoft.com/azure/backup/backup-azure-immutable-vault-concept" data-f="preview">
+<a class="lk__a" href="https://learn.microsoft.com/azure/backup/backup-azure-immutable-vault-concept" target="_blank" rel="noopener">Immutable vaults for Azure Backup: Disabled, Enabled, and Enabled and locked (WORM)</a>
+<span class="lk__chips"><span class="chip chip--preview">PREVIEW</span></span>
+<span class="lk__d">Immutability at vault scope, and the three states</span>
+<p class="lk__n">Locked-vault WORM is GA for Recovery Services vaults, still preview for Backup vaults.</p></div><div class="lk" data-s="soft delete for azure backup: off, on, and alwayson, with 14 to 180 day retention, and secure by default the three states, and the 14 to 180 day retention window two live learn pages disagree on ga versus preview here. trust the mechanism. secure by default with soft delete for azure backup https://learn.microsoft.com/azure/backup/secure-by-default" data-f="preview">
+<a class="lk__a" href="https://learn.microsoft.com/azure/backup/secure-by-default" target="_blank" rel="noopener">Soft delete for Azure Backup: Off, On, and AlwaysOn, with 14 to 180 day retention, and secure by default</a>
+<span class="lk__chips"><span class="chip chip--preview">PREVIEW</span></span>
+<span class="lk__d">The three states, and the 14 to 180 day retention window</span>
+<p class="lk__n">Two live Learn pages disagree on GA versus preview here. Trust the mechanism.</p></div><div class="lk" data-s="multi-user authorization (mua) for azure backup immutability protects the data, mua protects the operations multiuser authorization using resource guard https://learn.microsoft.com/azure/backup/multi-user-authorization-concept" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/backup/multi-user-authorization-concept" target="_blank" rel="noopener">Multi-user authorization (MUA) for Azure Backup</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Immutability protects the data, MUA protects the operations</span>
+</div><div class="lk" data-s="resource guard: the separate azure resource behind multi-user authorization why the guard sits outside your vault admin&#x27;s reach tutorial: create a resource guard and enable multi-user authorization in azure backup https://learn.microsoft.com/azure/backup/multi-user-authorization-tutorial" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/backup/multi-user-authorization-tutorial" target="_blank" rel="noopener">Resource Guard: the separate Azure resource behind multi-user authorization</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Why the guard sits outside your vault admin&#x27;s reach</span>
+</div><div class="lk" data-s="security levels in resiliency: maximum, adequate, minimum, and none how the platform grades a vault, and what moves the grade security levels in resiliency https://learn.microsoft.com/azure/resiliency/security-levels-concept" data-f="renamed dated">
+<a class="lk__a" href="https://learn.microsoft.com/azure/resiliency/security-levels-concept" target="_blank" rel="noopener">Security levels in Resiliency: Maximum, Adequate, Minimum, and None</a>
+<span class="lk__chips"><span class="chip chip--renamed">RENAMED</span><span class="chip chip--dated">DATED</span></span>
+<span class="lk__d">How the platform grades a vault, and what moves the grade</span>
+</div><div class="lk" data-s="resiliency in azure (azure portal &gt; resiliency &gt; manage &gt; vaults) where a vault&#x27;s security level is read across subscriptions renamed: formerly azure business continuity center, and backup center before that. what is resiliency? https://learn.microsoft.com/azure/resiliency/resiliency-overview" data-f="renamed">
+<a class="lk__a" href="https://learn.microsoft.com/azure/resiliency/resiliency-overview" target="_blank" rel="noopener">Resiliency in Azure (Azure portal &gt; Resiliency &gt; Manage &gt; Vaults)</a>
+<span class="lk__chips"><span class="chip chip--renamed">RENAMED</span></span>
+<span class="lk__d">Where a vault&#x27;s security level is read across subscriptions</span>
+<p class="lk__n">Renamed: formerly Azure Business Continuity Center, and Backup center before that.</p></div><div class="lk" data-s="security features in azure backup: vaulted data held in a microsoft-managed subscription and tenant why vaulted data sits outside your own subscription overview of security features in azure backup https://learn.microsoft.com/azure/backup/security-overview" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/backup/security-overview" target="_blank" rel="noopener">Security features in Azure Backup: vaulted data held in a Microsoft-managed subscription and tenant</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Why vaulted data sits outside your own subscription</span>
+</div><div class="lk" data-s="azure backup data protection best practices the four pillars, and where a backup contributor can undo you azure backup security best practices to safeguard backup data https://learn.microsoft.com/azure/backup/azure-backup-data-protection-best-practices" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/backup/azure-backup-data-protection-best-practices" target="_blank" rel="noopener">Azure Backup data protection best practices</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The four pillars, and where a Backup Contributor can undo you</span>
+</div><div class="lk" data-s="cross subscription restore recovering into a clean subscription when the primary is lost manage backup vaults https://learn.microsoft.com/azure/backup/manage-backup-vault#cross-subscription-restore-using-azure-portal" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/backup/manage-backup-vault#cross-subscription-restore-using-azure-portal" target="_blank" rel="noopener">Cross Subscription Restore</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Recovering into a clean subscription when the primary is lost</span>
+</div><div class="lk" data-s="air-gapped and offline off-site backup copies microsoft&#x27;s wording for air-gapped, plus the 3-2-1 rule design a ransomware-resilient backup architecture by using azure backup https://learn.microsoft.com/azure/architecture/security/ransomware-resilient-backup-architecture/" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/architecture/security/ransomware-resilient-backup-architecture/" target="_blank" rel="noopener">Air-gapped and offline off-site backup copies</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Microsoft&#x27;s wording for air-gapped, plus the 3-2-1 rule</span>
+</div><div class="lk" data-s="strong protection versus strongest protection which controls count as strong, and which count as strongest ransomware attack recovery plan https://learn.microsoft.com/security/ransomware/protect-against-ransomware-phase1" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/security/ransomware/protect-against-ransomware-phase1" target="_blank" rel="noopener">Strong protection versus strongest protection</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Which controls count as strong, and which count as strongest</span>
+</div><div class="lk" data-s="microsoft entra multifactor authentication mfa as the out-of-band step behind strong protection how it works: microsoft entra multifactor authentication https://learn.microsoft.com/entra/identity/authentication/concept-mfa-howitworks" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/entra/identity/authentication/concept-mfa-howitworks" target="_blank" rel="noopener">Microsoft Entra multifactor authentication</a>
+<span class="lk__chips"></span>
+<span class="lk__d">MFA as the out-of-band step behind strong protection</span>
+</div><div class="lk" data-s="restoration testing on a schedule, measured against rto how often to test restores, and what to measure each time design a ransomware-resilient backup architecture by using azure backup https://learn.microsoft.com/azure/architecture/security/ransomware-resilient-backup-architecture/#testing-and-validation" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/architecture/security/ransomware-resilient-backup-architecture/#testing-and-validation" target="_blank" rel="noopener">Restoration testing on a schedule, measured against RTO</a>
+<span class="lk__chips"></span>
+<span class="lk__d">How often to test restores, and what to measure each time</span>
+</div><div class="lk" data-s="recovery time objective (rto) and recovery point objective (rpo) the two definitions, and which one a downtime limit sets what are business continuity, high availability, and disaster recovery? https://learn.microsoft.com/azure/reliability/concept-business-continuity-high-availability-disaster-recovery" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/reliability/concept-business-continuity-high-availability-disaster-recovery" target="_blank" rel="noopener">Recovery time objective (RTO) and recovery point objective (RPO)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The two definitions, and which one a downtime limit sets</span>
+</div><div class="lk" data-s="backup and restore across hybrid and multicloud: one management plane, uniform policy, private encrypted paths one management plane instead of a product per environment backup cloud and on-premises workloads to cloud https://learn.microsoft.com/azure/backup/guidance-best-practices" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/backup/guidance-best-practices" target="_blank" rel="noopener">Backup and restore across hybrid and multicloud: one management plane, uniform policy, private encrypted paths</a>
+<span class="lk__chips"></span>
+<span class="lk__d">One management plane instead of a product per environment</span>
+</div><div class="lk" data-s="private endpoints and in-transit encryption for azure backup which vault type can have a private endpoint, and which cannot private endpoints for azure backup: version 2 experience https://learn.microsoft.com/azure/backup/backup-azure-private-endpoints-concept" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/backup/backup-azure-private-endpoints-concept" target="_blank" rel="noopener">Private endpoints and in-transit encryption for Azure Backup</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Which vault type can have a private endpoint, and which cannot</span>
+</div><div class="lk" data-s="microsoft.dataprotection and microsoft.recoveryservices resource providers which two providers to register, and where skipping it bites azure resource providers and types https://learn.microsoft.com/azure/azure-resource-manager/management/resource-providers-and-types" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/azure-resource-manager/management/resource-providers-and-types" target="_blank" rel="noopener">Microsoft.DataProtection and Microsoft.RecoveryServices resource providers</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Which two providers to register, and where skipping it bites</span>
+</div></div></section><section class="obj" id="o1-1-4">
+<div class="obj__h"><span class="obj__id">1.1.4</span>
+<span class="obj__t">Evaluate solutions for security updates</span>
+<span class="obj__where">Module 1, Clip 4</span></div>
+<div class="links"><div class="lk" data-s="azure update manager what it patches, and which platforms it supports what is azure update manager? https://learn.microsoft.com/azure/update-manager/overview" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/update-manager/overview" target="_blank" rel="noopener">Azure Update Manager</a>
+<span class="lk__chips"></span>
+<span class="lk__d">What it patches, and which platforms it supports</span>
+</div><div class="lk" data-s="azure arc-enabled servers how the management plane reaches non-azure machines what is azure arc-enabled servers? https://learn.microsoft.com/azure/azure-arc/servers/overview" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/azure-arc/servers/overview" target="_blank" rel="noopener">Azure Arc-enabled servers</a>
+<span class="lk__chips"></span>
+<span class="lk__d">How the management plane reaches non-Azure machines</span>
+</div><div class="lk" data-s="azure update manager policy integration: periodic assessment and maintenance configurations via azure policy periodic assessment and scheduled patching, enforced by policy tutorial: enable periodic assessment and scheduled patching on azure vms by using a policy https://learn.microsoft.com/azure/update-manager/tutorial-assessment-deployment-using-policy" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/update-manager/tutorial-assessment-deployment-using-policy" target="_blank" rel="noopener">Azure Update Manager policy integration: periodic assessment and maintenance configurations via Azure Policy</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Periodic assessment and scheduled patching, enforced by policy</span>
+</div><div class="lk" data-s="windows server update services (wsus) where wsus sits in the lifecycle, and what deprecated means wsus is deprecated, not retired. it still ships and is serviced, with no removal date. windows server update services (wsus) overview https://learn.microsoft.com/windows-server/administration/windows-server-update-services/get-started/windows-server-update-services-wsus" data-f="dated">
+<a class="lk__a" href="https://learn.microsoft.com/windows-server/administration/windows-server-update-services/get-started/windows-server-update-services-wsus" target="_blank" rel="noopener">Windows Server Update Services (WSUS)</a>
+<span class="lk__chips"><span class="chip chip--dated">DATED</span></span>
+<span class="lk__d">Where WSUS sits in the lifecycle, and what deprecated means</span>
+<p class="lk__n">WSUS is deprecated, not retired. It still ships and is serviced, with no removal date.</p></div><div class="lk" data-s="microsoft configuration manager the cost of the traditional path: per-platform tooling the current name is microsoft configuration manager, not sccm or system center. introduction to software updates in configuration manager https://learn.microsoft.com/intune/configmgr/sum/understand/software-updates-introduction" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/intune/configmgr/sum/understand/software-updates-introduction" target="_blank" rel="noopener">Microsoft Configuration Manager</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The cost of the traditional path: per-platform tooling</span>
+<p class="lk__n">The current name is Microsoft Configuration Manager, not SCCM or System Center.</p></div><div class="lk" data-s="wsus deprecation: windows server features no longer in development the deprecation catalog, and microsoft&#x27;s own definition features removed or no longer developed in windows server https://learn.microsoft.com/windows-server/get-started/removed-deprecated-features-windows-server" data-f="dated">
+<a class="lk__a" href="https://learn.microsoft.com/windows-server/get-started/removed-deprecated-features-windows-server" target="_blank" rel="noopener">WSUS deprecation: Windows Server features no longer in development</a>
+<span class="lk__chips"><span class="chip chip--dated">DATED</span></span>
+<span class="lk__d">The deprecation catalog, and Microsoft&#x27;s own definition</span>
+</div></div></section></section><section class="grp" id="g1-2">
+<header class="grp__h"><div class="grp__id">Functional group 1.2</div>
+<h2>Design solutions that align with the Microsoft Cybersecurity Reference Architectures (MCRA) and Microsoft Cloud Security Benchmark (MCSB)</h2>
+<p class="grp__meta">4 objectives &middot; 40 links</p></header>
+<section class="obj" id="o1-2-1">
+<div class="obj__h"><span class="obj__id">1.2.1</span>
+<span class="obj__t">Design solutions that align with best practices for cybersecurity capabilities and controls</span>
+<span class="obj__where">Module 2, Clips 1-2</span></div>
+<div class="links"><div class="lk" data-s="microsoft learn training module: design solutions that align with mcra and mcsb the free sc-100t00 module for this objective, five units design solutions that align with the microsoft cybersecurity reference architecture (mcra) and microsoft cloud security benchmark (mcsb) https://learn.microsoft.com/training/modules/design-solutions-microsoft-cybersecurity-cloud-security-benchmark/" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/training/modules/design-solutions-microsoft-cybersecurity-cloud-security-benchmark/" target="_blank" rel="noopener">Microsoft Learn training module: Design solutions that align with MCRA and MCSB</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The free SC-100T00 module for this objective, five units</span>
+</div><div class="lk" data-s="microsoft learn unit: describe the microsoft cloud security benchmark the benchmark and defender for cloud posture in one unit evaluate security posture by using microsoft defender for cloud, including the microsoft cloud security benchmark https://learn.microsoft.com/training/modules/design-solutions-security-posture-management-hybrid-multicloud-environments/2-evaluate-security-posture-microsoft-cloud-security-benchmark" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/training/modules/design-solutions-security-posture-management-hybrid-multicloud-environments/2-evaluate-security-posture-microsoft-cloud-security-benchmark" target="_blank" rel="noopener">Microsoft Learn unit: Describe the Microsoft Cloud Security Benchmark</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The benchmark and Defender for Cloud posture in one unit</span>
+</div><div class="lk" data-s="microsoft cybersecurity reference architectures (mcra) the diagram set that says which capability belongs where the older /security/adoption/mcra page still resolves but offers the april 2025 set. review microsoft cybersecurity reference architectures (mcras) https://learn.microsoft.com/security/zero-trust/microsoft-reference-architecture" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/security/zero-trust/microsoft-reference-architecture" target="_blank" rel="noopener">Microsoft Cybersecurity Reference Architectures (MCRA)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The diagram set that says which capability belongs where</span>
+<p class="lk__n">The older /security/adoption/mcra page still resolves but offers the April 2025 set.</p></div><div class="lk" data-s="downloading and presenting the mcra deck (presentation mode, screentips, per-capability doc links) review microsoft cybersecurity reference architectures (mcras) https://learn.microsoft.com/security/zero-trust/microsoft-reference-architecture#how-do-i-use-the-mcra" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/security/zero-trust/microsoft-reference-architecture#how-do-i-use-the-mcra" target="_blank" rel="noopener">Downloading and presenting the MCRA deck (presentation mode, ScreenTips, per-capability doc links)</a>
+<span class="lk__chips"></span>
+<span class="lk__d"></span>
+</div><div class="lk" data-s="microsoft security adoption framework (saf) how saf and mcra divide strategy from target architecture microsoft security adoption framework (saf) https://learn.microsoft.com/security/zero-trust/security-adoption-model" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/security/zero-trust/security-adoption-model" target="_blank" rel="noopener">Microsoft Security Adoption Framework (SAF)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">How SAF and MCRA divide strategy from target architecture</span>
+</div><div class="lk" data-s="microsoft cloud security benchmark v1 (ga) why v1 is still ga and still assessed by default overview of microsoft cloud security benchmark (v1) https://learn.microsoft.com/security/benchmark/azure/overview-mcsb-v1" data-f="dated">
+<a class="lk__a" href="https://learn.microsoft.com/security/benchmark/azure/overview-mcsb-v1" target="_blank" rel="noopener">Microsoft cloud security benchmark v1 (GA)</a>
+<span class="lk__chips"><span class="chip chip--dated">DATED</span></span>
+<span class="lk__d">Why v1 is still GA and still assessed by default</span>
+</div><div class="lk" data-s="microsoft cloud security benchmark v2 (preview) what v2 changes, and what preview status means for using it mcsb v2 is preview. no ga date is published, so do not state one. overview of microsoft cloud security benchmark v2 (preview) https://learn.microsoft.com/security/benchmark/azure/overview" data-f="preview">
+<a class="lk__a" href="https://learn.microsoft.com/security/benchmark/azure/overview" target="_blank" rel="noopener">Microsoft cloud security benchmark v2 (preview)</a>
+<span class="lk__chips"><span class="chip chip--preview">PREVIEW</span></span>
+<span class="lk__d">What v2 changes, and what preview status means for using it</span>
+<p class="lk__n">MCSB v2 is preview. No GA date is published, so do not state one.</p></div><div class="lk" data-s="mcsb control anatomy: security principle, risk to mitigate, implementation guidance and worked example, criticality level, framework mappings how a v2 preview control is built: principle, risk, mappings overview of microsoft cloud security benchmark v2 (preview) https://learn.microsoft.com/security/benchmark/azure/overview#security-control-structure-in-microsoft-cloud-security-benchmark-v2-preview" data-f="preview dated">
+<a class="lk__a" href="https://learn.microsoft.com/security/benchmark/azure/overview#security-control-structure-in-microsoft-cloud-security-benchmark-v2-preview" target="_blank" rel="noopener">MCSB control anatomy: security principle, risk to mitigate, implementation guidance and worked example, criticality level, framework mappings</a>
+<span class="lk__chips"><span class="chip chip--preview">PREVIEW</span><span class="chip chip--dated">DATED</span></span>
+<span class="lk__d">How a v2 preview control is built: principle, risk, mappings</span>
+</div><div class="lk" data-s="420+ azure policy built-in definitions aligned to mcsb (the regulatory compliance built-in initiative) where the benchmark turns into assessed policy definitions microsoft cloud security benchmark v2 control to azure built-in policy mapping https://learn.microsoft.com/security/benchmark/azure/mcsb-v2-controls-policy-mapping" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/security/benchmark/azure/mcsb-v2-controls-policy-mapping" target="_blank" rel="noopener">420+ Azure Policy built-in definitions aligned to MCSB (the regulatory compliance built-in initiative)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Where the benchmark turns into assessed policy definitions</span>
+</div><div class="lk" data-s="mcsb mapping to cis controls v8.1 the v2 preview crosswalk, mapped to cis controls v8.1 mapping of microsoft cloud security benchmark (mcsb) v2 (preview) to cis controls https://learn.microsoft.com/security/benchmark/azure/mcsb-v2-cis-controls-mapping" data-f="preview">
+<a class="lk__a" href="https://learn.microsoft.com/security/benchmark/azure/mcsb-v2-cis-controls-mapping" target="_blank" rel="noopener">MCSB mapping to CIS Controls v8.1</a>
+<span class="lk__chips"><span class="chip chip--preview">PREVIEW</span></span>
+<span class="lk__d">The v2 preview crosswalk, mapped to CIS Controls v8.1</span>
+</div><div class="lk" data-s="mcsb multicloud coverage: azure, aws, and gcp why the three-cloud scope claim belongs to v1, not to v2 microsoft cloud security benchmark in defender for cloud https://learn.microsoft.com/azure/defender-for-cloud/concept-regulatory-compliance" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/defender-for-cloud/concept-regulatory-compliance" target="_blank" rel="noopener">MCSB multicloud coverage: Azure, AWS, and GCP</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Why the three-cloud scope claim belongs to v1, not to v2</span>
+</div><div class="lk" data-s="mcsb service baselines (security baselines for azure services) why no v2 preview baseline exists, and what v1 covers security baselines for azure https://learn.microsoft.com/security/benchmark/azure/security-baselines-overview" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/security/benchmark/azure/security-baselines-overview" target="_blank" rel="noopener">MCSB service baselines (security baselines for Azure services)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Why no v2 preview baseline exists, and what v1 covers</span>
+</div><div class="lk" data-s="control renumbering between mcsb v1 and v2 (v2 ds-6 = &#x27;secure the workload lifecycle&#x27;) why a bare control number is ambiguous across v1 and v2 in v2, ds-6 is &#x27;secure the workload lifecycle&#x27;. v1 numbers that control differently. devops security https://learn.microsoft.com/security/benchmark/azure/mcsb-v2-devops-security" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/security/benchmark/azure/mcsb-v2-devops-security" target="_blank" rel="noopener">Control renumbering between MCSB v1 and v2 (v2 DS-6 = &#x27;Secure the workload lifecycle&#x27;)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Why a bare control number is ambiguous across v1 and v2</span>
+<p class="lk__n">In v2, DS-6 is &#x27;Secure the workload lifecycle&#x27;. v1 numbers that control differently.</p></div><div class="lk" data-s="microsoft defender for cloud regulatory compliance dashboard where mcsb becomes assessed state in your own tenant improve regulatory compliance https://learn.microsoft.com/azure/defender-for-cloud/regulatory-compliance-dashboard" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/defender-for-cloud/regulatory-compliance-dashboard" target="_blank" rel="noopener">Microsoft Defender for Cloud regulatory compliance dashboard</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Where MCSB becomes assessed state in your own tenant</span>
+</div></div></section><section class="obj" id="o1-2-2">
+<div class="obj__h"><span class="obj__id">1.2.2</span>
+<span class="obj__t">Design solutions that align with best practices for protecting against insider, external, and supply chain attacks</span>
+<span class="obj__where">Module 2, Clip 3</span></div>
+<div class="links"><div class="lk" data-s="sc-100 exam objective: design solutions that align with best practices for protecting against insider, external, and supply chain attacks the enabling objective verbatim, supply chain clause included https://learn.microsoft.com/credentials/certifications/resources/study-guides/sc-100#skills-measured-as-of-october-21-2026" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/credentials/certifications/resources/study-guides/sc-100#skills-measured-as-of-october-21-2026" target="_blank" rel="noopener">SC-100 exam objective: Design solutions that align with best practices for protecting against insider, external, and supply chain attacks</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The enabling objective verbatim, supply chain clause included</span>
+</div><div class="lk" data-s="insider threat control set: least privilege with just-in-time, ueba, data classification and dlp, separation of duties why detection carries more weight than prevention here design solutions with best practices for protecting against insider, external and supply chain attacks. https://learn.microsoft.com/training/modules/design-solutions-microsoft-cybersecurity-cloud-security-benchmark/3-design-solutions-best-practices-attack-protection" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/training/modules/design-solutions-microsoft-cybersecurity-cloud-security-benchmark/3-design-solutions-best-practices-attack-protection" target="_blank" rel="noopener">Insider threat control set: least privilege with just-in-time, UEBA, data classification and DLP, separation of duties</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Why detection carries more weight than prevention here</span>
+</div><div class="lk" data-s="user and entity behavior analytics (ueba) the anomalies it catches: bulk downloads, off-hours access sentinel&#x27;s azure portal experience retires march 31, 2027. use the defender portal. advanced threat detection with user and entity behavior analytics (ueba) in microsoft sentinel https://learn.microsoft.com/azure/sentinel/identify-threats-with-entity-behavior-analytics" data-f="dated">
+<a class="lk__a" href="https://learn.microsoft.com/azure/sentinel/identify-threats-with-entity-behavior-analytics" target="_blank" rel="noopener">User and entity behavior analytics (UEBA)</a>
+<span class="lk__chips"><span class="chip chip--dated">DATED</span></span>
+<span class="lk__d">The anomalies it catches: bulk downloads, off-hours access</span>
+<p class="lk__n">Sentinel&#x27;s Azure portal experience retires March 31, 2027. Use the Defender portal.</p></div><div class="lk" data-s="microsoft purview data loss prevention and data classification / sensitivity labels controls that travel with the data, not with the person learn about data loss prevention https://learn.microsoft.com/purview/dlp-learn-about-dlp" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/purview/dlp-learn-about-dlp" target="_blank" rel="noopener">Microsoft Purview Data Loss Prevention and data classification / sensitivity labels</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Controls that travel with the data, not with the person</span>
+</div><div class="lk" data-s="external attacks: privilege escalation through credential theft, and securing privileged access as the highest-leverage control why privilege escalation is the path most incidents take securing privileged access https://learn.microsoft.com/security/privileged-access-workstations/overview" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/security/privileged-access-workstations/overview" target="_blank" rel="noopener">External attacks: privilege escalation through credential theft, and securing privileged access as the highest-leverage control</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Why privilege escalation is the path most incidents take</span>
+</div><div class="lk" data-s="supply chain controls: software integrity verification, code signing, software bill of materials (sbom), vendor risk assessment, time-limited third-party accounts, segmentation which mcsb control to cite: ds-2 in the v2 preview set https://learn.microsoft.com/security/benchmark/azure/mcsb-v2-devops-security#ds-2" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/security/benchmark/azure/mcsb-v2-devops-security#ds-2" target="_blank" rel="noopener">Supply chain controls: software integrity verification, code signing, software bill of materials (SBOM), vendor risk assessment, time-limited third-party accounts, segmentation</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Which MCSB control to cite: DS-2 in the v2 preview set</span>
+</div><div class="lk" data-s="mcsb v2 privileged access (pa) and data protection (dp) control families the two families that carry insider-threat work in v2 preview privileged access https://learn.microsoft.com/security/benchmark/azure/mcsb-v2-privileged-access" data-f="preview">
+<a class="lk__a" href="https://learn.microsoft.com/security/benchmark/azure/mcsb-v2-privileged-access" target="_blank" rel="noopener">MCSB v2 Privileged Access (PA) and Data Protection (DP) control families</a>
+<span class="lk__chips"><span class="chip chip--preview">PREVIEW</span></span>
+<span class="lk__d">The two families that carry insider-threat work in v2 preview</span>
+</div></div></section><section class="obj" id="o1-2-3">
+<div class="obj__h"><span class="obj__id">1.2.3</span>
+<span class="obj__t">Design AI solutions that align to the Microsoft Cloud Security Benchmark</span>
+<span class="obj__where">Module 2, Clip 4</span></div>
+<div class="links"><div class="lk" data-s="mcsb v2 artificial intelligence security domain the twelfth domain, ai-1 through ai-7, all of it preview artificial intelligence security https://learn.microsoft.com/security/benchmark/azure/mcsb-v2-artificial-intelligence-security" data-f="preview">
+<a class="lk__a" href="https://learn.microsoft.com/security/benchmark/azure/mcsb-v2-artificial-intelligence-security" target="_blank" rel="noopener">MCSB v2 Artificial Intelligence Security domain</a>
+<span class="lk__chips"><span class="chip chip--preview">PREVIEW</span></span>
+<span class="lk__d">The twelfth domain, AI-1 through AI-7, all of it preview</span>
+</div><div class="lk" data-s="ai-1 ensure use of approved models why unknown model provenance is an ai-1 problem, not filtering artificial intelligence security https://learn.microsoft.com/security/benchmark/azure/mcsb-v2-artificial-intelligence-security#ai-1" data-f="preview">
+<a class="lk__a" href="https://learn.microsoft.com/security/benchmark/azure/mcsb-v2-artificial-intelligence-security#ai-1" target="_blank" rel="noopener">AI-1 Ensure use of approved models</a>
+<span class="lk__chips"><span class="chip chip--preview">PREVIEW</span></span>
+<span class="lk__d">Why unknown model provenance is an AI-1 problem, not filtering</span>
+</div><div class="lk" data-s="ai-2 implement multi-layered content filtering filtering at input, during processing, and at output artificial intelligence security https://learn.microsoft.com/security/benchmark/azure/mcsb-v2-artificial-intelligence-security#ai-2" data-f="preview">
+<a class="lk__a" href="https://learn.microsoft.com/security/benchmark/azure/mcsb-v2-artificial-intelligence-security#ai-2" target="_blank" rel="noopener">AI-2 Implement multi-layered content filtering</a>
+<span class="lk__chips"><span class="chip chip--preview">PREVIEW</span></span>
+<span class="lk__d">Filtering at input, during processing, and at output</span>
+</div><div class="lk" data-s="ai-3 adopt safety meta-prompts system instructions that outrank user input, and their limits artificial intelligence security https://learn.microsoft.com/security/benchmark/azure/mcsb-v2-artificial-intelligence-security#ai-3" data-f="preview">
+<a class="lk__a" href="https://learn.microsoft.com/security/benchmark/azure/mcsb-v2-artificial-intelligence-security#ai-3" target="_blank" rel="noopener">AI-3 Adopt safety meta-prompts</a>
+<span class="lk__chips"><span class="chip chip--preview">PREVIEW</span></span>
+<span class="lk__d">System instructions that outrank user input, and their limits</span>
+</div><div class="lk" data-s="ai-4 apply least privilege for agent functions scoping what an agent&#x27;s functions and plugins can reach artificial intelligence security https://learn.microsoft.com/security/benchmark/azure/mcsb-v2-artificial-intelligence-security#ai-4" data-f="preview">
+<a class="lk__a" href="https://learn.microsoft.com/security/benchmark/azure/mcsb-v2-artificial-intelligence-security#ai-4" target="_blank" rel="noopener">AI-4 Apply least privilege for agent functions</a>
+<span class="lk__chips"><span class="chip chip--preview">PREVIEW</span></span>
+<span class="lk__d">Scoping what an agent&#x27;s functions and plugins can reach</span>
+</div><div class="lk" data-s="ai-5 ensure human-in-the-loop deciding which operations are high risk enough to gate artificial intelligence security https://learn.microsoft.com/security/benchmark/azure/mcsb-v2-artificial-intelligence-security#ai-5" data-f="preview">
+<a class="lk__a" href="https://learn.microsoft.com/security/benchmark/azure/mcsb-v2-artificial-intelligence-security#ai-5" target="_blank" rel="noopener">AI-5 Ensure human-in-the-loop</a>
+<span class="lk__chips"><span class="chip chip--preview">PREVIEW</span></span>
+<span class="lk__d">Deciding which operations are high risk enough to gate</span>
+</div><div class="lk" data-s="ai-6 establish monitoring and detection monitoring ai behavior rather than ai infrastructure artificial intelligence security https://learn.microsoft.com/security/benchmark/azure/mcsb-v2-artificial-intelligence-security#ai-6" data-f="preview">
+<a class="lk__a" href="https://learn.microsoft.com/security/benchmark/azure/mcsb-v2-artificial-intelligence-security#ai-6" target="_blank" rel="noopener">AI-6 Establish monitoring and detection</a>
+<span class="lk__chips"><span class="chip chip--preview">PREVIEW</span></span>
+<span class="lk__d">Monitoring AI behavior rather than AI infrastructure</span>
+</div><div class="lk" data-s="ai-7 perform continuous ai red teaming why red teaming repeats every time the wiring changes artificial intelligence security https://learn.microsoft.com/security/benchmark/azure/mcsb-v2-artificial-intelligence-security#ai-7" data-f="preview">
+<a class="lk__a" href="https://learn.microsoft.com/security/benchmark/azure/mcsb-v2-artificial-intelligence-security#ai-7" target="_blank" rel="noopener">AI-7 Perform continuous AI red teaming</a>
+<span class="lk__chips"><span class="chip chip--preview">PREVIEW</span></span>
+<span class="lk__d">Why red teaming repeats every time the wiring changes</span>
+</div><div class="lk" data-s="direct and indirect prompt injection, plugin data leakage, and insecure plugin design direct versus indirect injection, mapped to owasp and atlas 2. prompt injection (direct / indirect) https://learn.microsoft.com/security/zero-trust/catalog-ai-attack-techniques/prompt-injection" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/security/zero-trust/catalog-ai-attack-techniques/prompt-injection" target="_blank" rel="noopener">Direct and indirect prompt injection, plugin data leakage, and insecure plugin design</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Direct versus indirect injection, mapped to OWASP and ATLAS</span>
+</div><div class="lk" data-s="mitre atlas the vocabulary every v2 ai control maps its threats to mitre atlas https://atlas.mitre.org/" data-f="ext">
+<a class="lk__a" href="https://atlas.mitre.org/" target="_blank" rel="noopener">MITRE ATLAS</a>
+<span class="lk__chips"><span class="chip chip--ext">NON-MICROSOFT</span></span>
+<span class="lk__d">The vocabulary every v2 AI control maps its threats to</span>
+</div><div class="lk" data-s="owasp top 10 for large language model applications the 2025 edition, and how it differs from the 2023 list the project is now the owasp gen ai security project. current edition is 2025. 2025 top 10 risk &amp; mitigations for llms and gen ai apps https://genai.owasp.org/llm-top-10/" data-f="ext">
+<a class="lk__a" href="https://genai.owasp.org/llm-top-10/" target="_blank" rel="noopener">OWASP Top 10 for Large Language Model Applications</a>
+<span class="lk__chips"><span class="chip chip--ext">NON-MICROSOFT</span></span>
+<span class="lk__d">The 2025 edition, and how it differs from the 2023 list</span>
+<p class="lk__n">The project is now the OWASP Gen AI Security Project. Current edition is 2025.</p></div></div></section><section class="obj" id="o1-2-4">
+<div class="obj__h"><span class="obj__id">1.2.4</span>
+<span class="obj__t">Design solutions that align with the Zero Trust adoption framework</span>
+<span class="obj__where">Module 2, Clip 5</span></div>
+<div class="links"><div class="lk" data-s="zero trust as a security strategy, not a product or service (microsoft zero trust guidance center) microsoft&#x27;s definition, and why no product ships zero trust zero trust as a security foundation https://learn.microsoft.com/security/zero-trust/zero-trust-overview" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/security/zero-trust/zero-trust-overview" target="_blank" rel="noopener">Zero Trust as a security strategy, not a product or service (Microsoft Zero Trust guidance center)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Microsoft&#x27;s definition, and why no product ships Zero Trust</span>
+</div><div class="lk" data-s="zero trust adoption framework: the five lifecycle phases (define strategy, plan, ready, adopt, govern and manage) the caf lifecycle applied to a whole digital estate overview lists six phases; scenario articles show five, combining govern and manage. zero trust adoption framework overview https://learn.microsoft.com/security/zero-trust/adopt/zero-trust-adoption-overview" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/security/zero-trust/adopt/zero-trust-adoption-overview" target="_blank" rel="noopener">Zero Trust adoption framework: the five lifecycle phases (define strategy, plan, ready, adopt, govern and manage)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The CAF lifecycle applied to a whole digital estate</span>
+<p class="lk__n">Overview lists six phases; scenario articles show five, combining govern and manage.</p></div><div class="lk" data-s="the five zero trust business scenarios, starting with &#x27;rapidly modernize your security posture&#x27; where zero trust starts, and why posture comes before pillars rapidly modernize your security posture https://learn.microsoft.com/security/zero-trust/adopt/rapidly-modernize-security-posture" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/security/zero-trust/adopt/rapidly-modernize-security-posture" target="_blank" rel="noopener">The five Zero Trust business scenarios, starting with &#x27;Rapidly modernize your security posture&#x27;</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Where Zero Trust starts, and why posture comes before pillars</span>
+</div><div class="lk" data-s="zero trust initiative in microsoft security exposure management (progress against business scenarios, plus supplementary metrics) initiative progress, mttr, and share of compliant accounts rapidly modernize your security posture https://learn.microsoft.com/security/zero-trust/adopt/rapidly-modernize-security-posture#track-and-measure" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/security/zero-trust/adopt/rapidly-modernize-security-posture#track-and-measure" target="_blank" rel="noopener">Zero Trust initiative in Microsoft Security Exposure Management (progress against business scenarios, plus supplementary metrics)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Initiative progress, MTTR, and share of compliant accounts</span>
+</div><div class="lk" data-s="assigning the nist sp 800-53 standard in defender for cloud regulatory compliance (the practice item&#x27;s correct answer) needs a paid defender plan plus owner or policy contributor assign regulatory compliance standards in microsoft defender for cloud https://learn.microsoft.com/azure/defender-for-cloud/assign-regulatory-compliance-standards" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/defender-for-cloud/assign-regulatory-compliance-standards" target="_blank" rel="noopener">Assigning the NIST SP 800-53 standard in Defender for Cloud regulatory compliance (the practice item&#x27;s correct answer)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Needs a paid Defender plan plus Owner or Policy Contributor</span>
+</div><div class="lk" data-s="microsoft purview compliance manager the tempting wrong answer: it reads defender for cloud data microsoft purview compliance manager https://learn.microsoft.com/purview/compliance-manager" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/purview/compliance-manager" target="_blank" rel="noopener">Microsoft Purview Compliance Manager</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The tempting wrong answer: it reads Defender for Cloud data</span>
+</div><div class="lk" data-s="microsoft defender for cloud secure score measures mcsb recommendations, not a named standard secure score in defender for cloud https://learn.microsoft.com/azure/defender-for-cloud/secure-score-security-controls" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/defender-for-cloud/secure-score-security-controls" target="_blank" rel="noopener">Microsoft Defender for Cloud secure score</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Measures MCSB recommendations, not a named standard</span>
+</div><div class="lk" data-s="azure policy regulatory compliance built-in initiative for nist sp 800-53 rev. 5 the built-in initiative underneath the compliance dashboard details of the nist sp 800-53 rev. 5 regulatory compliance built-in initiative https://learn.microsoft.com/azure/governance/policy/samples/nist-sp-800-53-r5" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/governance/policy/samples/nist-sp-800-53-r5" target="_blank" rel="noopener">Azure Policy regulatory compliance built-in initiative for NIST SP 800-53 Rev. 5</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The built-in initiative underneath the compliance dashboard</span>
+</div></div></section></section><section class="grp" id="g1-3">
+<header class="grp__h"><div class="grp__id">Functional group 1.3</div>
+<h2>Design solutions that align with the Microsoft Cloud Adoption Framework for Azure (CAF) and the Azure Well-Architected Framework</h2>
+<p class="grp__meta">5 objectives &middot; 78 links</p></header>
+<section class="obj" id="o1-3-1">
+<div class="obj__h"><span class="obj__id">1.3.1</span>
+<span class="obj__t">Design a new or evaluate an existing strategy for security and governance based on the Microsoft Cloud Adoption Framework for Azure (CAF) and the Azure Well-Architected Framework (WAF)</span>
+<span class="obj__where">Module 3, Clip 1</span></div>
+<div class="links"><div class="lk" data-s="microsoft learn training: design solutions that align with caf and the well-architected framework (sc-100t00) microsoft&#x27;s self-paced take on caf, landing zones, waf security design security solutions that align with the cloud adoption framework (caf) and well-architected framework (waf) https://learn.microsoft.com/training/modules/design-solutions-align-cloud-adoption-framework-well-architected-framework/" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/training/modules/design-solutions-align-cloud-adoption-framework-well-architected-framework/" target="_blank" rel="noopener">Microsoft Learn training: design solutions that align with CAF and the Well-Architected Framework (SC-100T00)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Microsoft&#x27;s self-paced take on CAF, landing zones, WAF security</span>
+</div><div class="lk" data-s="microsoft cloud adoption framework for azure (caf) the seven caf phases, and which three never stop what is the cloud adoption framework? https://learn.microsoft.com/azure/cloud-adoption-framework/overview" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/cloud-adoption-framework/overview" target="_blank" rel="noopener">Microsoft Cloud Adoption Framework for Azure (CAF)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The seven CAF phases, and which three never stop</span>
+</div><div class="lk" data-s="caf&#x27;s seven methodologies (strategy, plan, ready, adopt, govern, secure, manage) four foundational phases in order, three that run forever now labeled foundational and operational; some older learn modules still say eight. what is the cloud adoption framework? https://learn.microsoft.com/azure/cloud-adoption-framework/overview#how-the-cloud-adoption-framework-works" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/cloud-adoption-framework/overview#how-the-cloud-adoption-framework-works" target="_blank" rel="noopener">CAF&#x27;s seven methodologies (Strategy, Plan, Ready, Adopt, Govern, Secure, Manage)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Four foundational phases in order, three that run forever</span>
+<p class="lk__n">Now labeled Foundational and Operational; some older Learn modules still say eight.</p></div><div class="lk" data-s="caf secure methodology the estate-wide yardstick for a security strategy secure overview https://learn.microsoft.com/azure/cloud-adoption-framework/secure/overview" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/cloud-adoption-framework/secure/overview" target="_blank" rel="noopener">CAF Secure methodology</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The estate-wide yardstick for a security strategy</span>
+</div><div class="lk" data-s="caf govern methodology (continuous) the five-step governance loop that never finishes build a cloud governance team https://learn.microsoft.com/azure/cloud-adoption-framework/govern/" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/cloud-adoption-framework/govern/" target="_blank" rel="noopener">CAF Govern methodology (continuous)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The five-step governance loop that never finishes</span>
+</div><div class="lk" data-s="caf manage methodology (continuous) ramp: ready, administer, monitor, protect, for day-two ops ready your azure cloud operations https://learn.microsoft.com/azure/cloud-adoption-framework/manage/ready-cloud-operations" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/cloud-adoption-framework/manage/ready-cloud-operations" target="_blank" rel="noopener">CAF Manage methodology (continuous)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">RAMP: ready, administer, monitor, protect, for day-two ops</span>
+</div><div class="lk" data-s="azure well-architected framework (waf) and its five pillars security is one pillar of five, and here are the other four microsoft azure well-architected framework pillars https://learn.microsoft.com/azure/well-architected/pillars" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/well-architected/pillars" target="_blank" rel="noopener">Azure Well-Architected Framework (WAF) and its five pillars</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Security is one pillar of five, and here are the other four</span>
+</div><div class="lk" data-s="well-architected framework security pillar the workload half: principles, checklist, tradeoffs, maturity security quick links https://learn.microsoft.com/azure/well-architected/security/" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/well-architected/security/" target="_blank" rel="noopener">Well-Architected Framework Security pillar</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The workload half: principles, checklist, tradeoffs, maturity</span>
+</div><div class="lk" data-s="the five waf security design principles (plan readiness, protect confidentiality, protect integrity, protect availability, sustain and evolve posture) all five in microsoft&#x27;s wording, including the fifth people forget security design principles https://learn.microsoft.com/azure/well-architected/security/principles" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/well-architected/security/principles" target="_blank" rel="noopener">The five WAF Security design principles (plan readiness, protect confidentiality, protect integrity, protect availability, sustain and evolve posture)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">All five in Microsoft&#x27;s wording, including the fifth people forget</span>
+</div><div class="lk" data-s="waf security checklist se:01 through se:12 not microsoft cloud security benchmark ids, despite the numbering power platform&#x27;s checklist reuses se:01 to se:10 with different mappings. design review checklist for security https://learn.microsoft.com/azure/well-architected/security/checklist" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/well-architected/security/checklist" target="_blank" rel="noopener">WAF Security checklist SE:01 through SE:12</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Not Microsoft cloud security benchmark IDs, despite the numbering</span>
+<p class="lk__n">Power Platform&#x27;s checklist reuses SE:01 to SE:10 with different mappings.</p></div><div class="lk" data-s="well-architected review assessment tool free, about 60 questions, scores one workload not an estate azure well-architected review https://learn.microsoft.com/assessments/azure-architecture-review/" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/assessments/azure-architecture-review/" target="_blank" rel="noopener">Well-Architected Review assessment tool</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Free, about 60 questions, scores one workload not an estate</span>
+</div><div class="lk" data-s="caf versus waf: estate lifecycle versus single workload caf governs the estate, waf designs one workload what is the azure well-architected framework? https://learn.microsoft.com/azure/well-architected/what-is-well-architected-framework" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/well-architected/what-is-well-architected-framework" target="_blank" rel="noopener">CAF versus WAF: estate lifecycle versus single workload</a>
+<span class="lk__chips"></span>
+<span class="lk__d">CAF governs the estate, WAF designs one workload</span>
+</div><div class="lk" data-s="the cia triad (confidentiality, integrity, availability) the middle three design principles, under a name you know secure overview https://learn.microsoft.com/azure/cloud-adoption-framework/secure/overview#adopt-cia-triad-principles" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/cloud-adoption-framework/secure/overview#adopt-cia-triad-principles" target="_blank" rel="noopener">The CIA triad (confidentiality, integrity, availability)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The middle three design principles, under a name you know</span>
+</div></div></section><section class="obj" id="o1-3-2">
+<div class="obj__h"><span class="obj__id">1.3.2</span>
+<span class="obj__t">Recommend solutions for security and governance based on the Microsoft Cloud Adoption Framework for Azure (CAF) and the Azure Well-Architected Framework</span>
+<span class="obj__where">Module 3, Clip 2</span></div>
+<div class="links"><div class="lk" data-s="azure landing zone design areas (the platform-scope assessment yardstick) identity, network topology, resource organization, governance azure landing zone design areas and conceptual architecture https://learn.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/design-areas" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/design-areas" target="_blank" rel="noopener">Azure landing zone design areas (the platform-scope assessment yardstick)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Identity, network topology, resource organization, governance</span>
+</div><div class="lk" data-s="the four sequencing criteria for findings: risk level, blast radius, compliance obligation, quick win versus redesign ranking findings when risk, blast radius and effort disagree assess cloud risks https://learn.microsoft.com/azure/cloud-adoption-framework/govern/assess-cloud-risks" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/cloud-adoption-framework/govern/assess-cloud-risks" target="_blank" rel="noopener">The four sequencing criteria for findings: risk level, blast radius, compliance obligation, quick win versus redesign</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Ranking findings when risk, blast radius and effort disagree</span>
+</div><div class="lk" data-s="azure machine configuration in-guest baseline auditing driven by azure policy renamed from azure policy guest configuration; the resource provider keeps the old name. what is azure machine configuration? https://learn.microsoft.com/azure/governance/machine-configuration/overview/01-overview-concepts" data-f="renamed dated">
+<a class="lk__a" href="https://learn.microsoft.com/azure/governance/machine-configuration/overview/01-overview-concepts" target="_blank" rel="noopener">Azure Machine Configuration</a>
+<span class="lk__chips"><span class="chip chip--renamed">RENAMED</span><span class="chip chip--dated">DATED</span></span>
+<span class="lk__d">In-guest baseline auditing driven by Azure Policy</span>
+<p class="lk__n">Renamed from Azure Policy guest configuration; the resource provider keeps the old name.</p></div></div></section><section class="obj" id="o1-3-3">
+<div class="obj__h"><span class="obj__id">1.3.3</span>
+<span class="obj__t">Design solutions for implementing and governing security by using Azure landing zones</span>
+<span class="obj__where">Module 3, Clip 3</span></div>
+<div class="links"><div class="lk" data-s="microsoft learn training: govern and implement security with azure landing zones hands-on: operating models, design areas, the accelerator ready https://learn.microsoft.com/training/modules/cloud-adoption-framework/4-ready" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/training/modules/cloud-adoption-framework/4-ready" target="_blank" rel="noopener">Microsoft Learn training: govern and implement security with Azure landing zones</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Hands-on: operating models, design areas, the accelerator</span>
+</div><div class="lk" data-s="microsoft learn training: build a cloud governance strategy on azure with azure policy and management groups build the team, assess risk, enforce with azure policy the module still teaches azure blueprints, which is deprecated. skip those units. govern https://learn.microsoft.com/training/modules/cloud-adoption-framework/8-govern" data-f="dated">
+<a class="lk__a" href="https://learn.microsoft.com/training/modules/cloud-adoption-framework/8-govern" target="_blank" rel="noopener">Microsoft Learn training: build a cloud governance strategy on Azure with Azure Policy and management groups</a>
+<span class="lk__chips"><span class="chip chip--dated">DATED</span></span>
+<span class="lk__d">Build the team, assess risk, enforce with Azure Policy</span>
+<p class="lk__n">The module still teaches Azure Blueprints, which is deprecated. Skip those units.</p></div><div class="lk" data-s="azure landing zone: the conceptual architecture microsoft&#x27;s definition, plus the two kinds you must name what is an azure landing zone? https://learn.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/" target="_blank" rel="noopener">Azure landing zone: the conceptual architecture</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Microsoft&#x27;s definition, plus the two kinds you must name</span>
+</div><div class="lk" data-s="a landing zone is not a service you deploy an architecture and subscriptions, not a service you deploy what is an azure landing zone? https://learn.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/#azure-landing-zone-architecture" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/#azure-landing-zone-architecture" target="_blank" rel="noopener">A landing zone is not a service you deploy</a>
+<span class="lk__chips"></span>
+<span class="lk__d">An architecture and subscriptions, not a service you deploy</span>
+</div><div class="lk" data-s="platform landing zone built once per tenant: management groups, networking, logging https://learn.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/#platform-landing-zone" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/#platform-landing-zone" target="_blank" rel="noopener">Platform landing zone</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Built once per tenant: management groups, networking, logging</span>
+</div><div class="lk" data-s="application landing zone stamped out per workload, inheriting policy from the platform what is an azure landing zone? https://learn.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/#application-landing-zones" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/#application-landing-zones" target="_blank" rel="noopener">Application landing zone</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Stamped out per workload, inheriting policy from the platform</span>
+</div><div class="lk" data-s="policy and guardrail inheritance from platform to application landing zones why the answer is usually &#x27;assign at the management group&#x27; what are azure management groups? https://learn.microsoft.com/azure/governance/management-groups/overview" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/governance/management-groups/overview" target="_blank" rel="noopener">Policy and guardrail inheritance from platform to application landing zones</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Why the answer is usually &#x27;assign at the management group&#x27;</span>
+</div><div class="lk" data-s="azure landing zone accelerator the architecture as deployable bicep or terraform enterprise-scale is the old repo; the accelerator is now azure/azure-landing-zones. platform landing zone implementation options https://learn.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/implementation-options" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/implementation-options" target="_blank" rel="noopener">Azure landing zone accelerator</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The architecture as deployable Bicep or Terraform</span>
+<p class="lk__n">Enterprise-Scale is the old repo; the accelerator is now Azure/Azure-Landing-Zones.</p></div><div class="lk" data-s="identity ownership seam: who owns identity providers, conditional access, and privileged access platform owns entra id, conditional access, privileged access identity and access management design area https://learn.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/design-area/identity-access" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/design-area/identity-access" target="_blank" rel="noopener">Identity ownership seam: who owns identity providers, Conditional Access, and privileged access</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Platform owns Entra ID, Conditional Access, privileged access</span>
+</div><div class="lk" data-s="network ownership seam: central hub firewall, dns, and ddos versus local nsgs, application gateways, and private endpoints central firewall, dns and ddos versus local nsgs and endpoints network topology and connectivity https://learn.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/design-area/network-topology-and-connectivity" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/cloud-adoption-framework/ready/landing-zone/design-area/network-topology-and-connectivity" target="_blank" rel="noopener">Network ownership seam: central hub firewall, DNS, and DDoS versus local NSGs, application gateways, and private endpoints</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Central firewall, DNS and DDoS versus local NSGs and endpoints</span>
+</div><div class="lk" data-s="monitoring and siem ownership seam: central aggregation versus workload-team monitoring with platform forwarding rules where telemetry lands and who triages the 2 a.m. alert sentinel&#x27;s azure portal experience ends march 31, 2027; defender portal only after. microsoft sentinel in the microsoft defender portal https://learn.microsoft.com/azure/sentinel/microsoft-sentinel-defender-portal" data-f="dated">
+<a class="lk__a" href="https://learn.microsoft.com/azure/sentinel/microsoft-sentinel-defender-portal" target="_blank" rel="noopener">Monitoring and SIEM ownership seam: central aggregation versus workload-team monitoring with platform forwarding rules</a>
+<span class="lk__chips"><span class="chip chip--dated">DATED</span></span>
+<span class="lk__d">Where telemetry lands and who triages the 2 a.m. alert</span>
+<p class="lk__n">Sentinel&#x27;s Azure portal experience ends March 31, 2027; Defender portal only after.</p></div><div class="lk" data-s="azure policy the control-plane enforcement engine under all of this what is azure policy? https://learn.microsoft.com/azure/governance/policy/overview" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/governance/policy/overview" target="_blank" rel="noopener">Azure Policy</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The control-plane enforcement engine under all of this</span>
+</div><div class="lk" data-s="azure policy definitions and initiatives (policy sets) definition versus initiative, and why to assign an initiative azure policy initiative definition structure https://learn.microsoft.com/azure/governance/policy/concepts/initiative-definition-structure" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/governance/policy/concepts/initiative-definition-structure" target="_blank" rel="noopener">Azure Policy definitions and initiatives (policy sets)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Definition versus initiative, and why to assign an initiative</span>
+</div><div class="lk" data-s="azure policy assignments scope, effect, enforcement mode and exclusions live here azure policy assignment structure https://learn.microsoft.com/azure/governance/policy/concepts/assignment-structure" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/governance/policy/concepts/assignment-structure" target="_blank" rel="noopener">Azure Policy assignments</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Scope, effect, enforcement mode and exclusions live here</span>
+</div><div class="lk" data-s="azure policy deny effect blocks at the request with a 403, and never retroactive azure policy definitions deny effect https://learn.microsoft.com/azure/governance/policy/concepts/effect-deny" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/governance/policy/concepts/effect-deny" target="_blank" rel="noopener">Azure Policy Deny effect</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Blocks at the request with a 403, and never retroactive</span>
+</div><div class="lk" data-s="requestdisallowedbypolicy error, naming the policy definition and assignment the error naming both the definition and the assignment resolve errors for request disallowed by policy https://learn.microsoft.com/azure/azure-resource-manager/troubleshooting/error-policy-requestdisallowedbypolicy" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/azure-resource-manager/troubleshooting/error-policy-requestdisallowedbypolicy" target="_blank" rel="noopener">RequestDisallowedByPolicy error, naming the policy definition and assignment</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The error naming both the definition and the assignment</span>
+</div><div class="lk" data-s="understand scope in azure policy (assignment scope, definition location, exclusions) exclusions skip evaluation; exemptions still report understand scope in azure policy https://learn.microsoft.com/azure/governance/policy/concepts/scope" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/governance/policy/concepts/scope" target="_blank" rel="noopener">Understand scope in Azure Policy (assignment scope, definition location, exclusions)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Exclusions skip evaluation; exemptions still report</span>
+</div><div class="lk" data-s="azure policy enforcement mode: enabled versus donotenforce why a deny policy isn&#x27;t denying, and how to stage it safely three enforcement modes now, not two: enabled, donotenforce and enroll. azure policy assignment structure https://learn.microsoft.com/azure/governance/policy/concepts/assignment-structure#enforcement-mode" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/governance/policy/concepts/assignment-structure#enforcement-mode" target="_blank" rel="noopener">Azure Policy enforcement mode: Enabled versus DoNotEnforce</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Why a Deny policy isn&#x27;t denying, and how to stage it safely</span>
+<p class="lk__n">Three enforcement modes now, not two: Enabled, DoNotEnforce and Enroll.</p></div><div class="lk" data-s="portal surface: azure portal, all services, management groups (hierarchy view and the group details link) the hierarchy view, and why a move can take 30 minutes manage your azure subscriptions at scale with management groups https://learn.microsoft.com/azure/governance/management-groups/manage" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/governance/management-groups/manage" target="_blank" rel="noopener">Portal surface: Azure portal, All services, Management groups (hierarchy view and the group details link)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The hierarchy view, and why a move can take 30 minutes</span>
+</div><div class="lk" data-s="portal surface: policy, assignments blade (scope field, effect, enforcement mode) creating an assignment field by field in the assign policy pane quickstart: create a policy assignment to identify non-compliant resources using azure portal https://learn.microsoft.com/azure/governance/policy/assign-policy-portal" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/governance/policy/assign-policy-portal" target="_blank" rel="noopener">Portal surface: Policy, Assignments blade (Scope field, effect, enforcement mode)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Creating an assignment field by field in the Assign Policy pane</span>
+</div><div class="lk" data-s="portal surface: policy, compliance blade with scope, type, and compliance state filters compliance states, and the 5-minute then 24-hour cycle get compliance data of azure resources https://learn.microsoft.com/azure/governance/policy/how-to/get-compliance-data" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/governance/policy/how-to/get-compliance-data" target="_blank" rel="noopener">Portal surface: Policy, Compliance blade with Scope, Type, and Compliance state filters</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Compliance states, and the 5-minute then 24-hour cycle</span>
+</div><div class="lk" data-s="portal surface: resource group, deployments, the failed deployment detail where a policy-blocked deployment leaves its evidence view deployment history with azure resource manager https://learn.microsoft.com/azure/azure-resource-manager/templates/deployment-history" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/azure-resource-manager/templates/deployment-history" target="_blank" rel="noopener">Portal surface: resource group, Deployments, the failed deployment detail</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Where a policy-blocked deployment leaves its evidence</span>
+</div></div></section><section class="obj" id="o1-3-4">
+<div class="obj__h"><span class="obj__id">1.3.4</span>
+<span class="obj__t">Design a strategy for secure AI adoption</span>
+<span class="obj__where">Module 4, Clip 1</span></div>
+<div class="links"><div class="lk" data-s="microsoft learn training: sc-100 module on designing solutions that align with caf and the well-architected framework (secure ai adoption unit) the self-paced unit on the six phases and four decisions design a strategy for secure ai adoption https://learn.microsoft.com/training/modules/design-solutions-align-cloud-adoption-framework-well-architected-framework/3a-cloud-adoption-framework-secure-ai" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/training/modules/design-solutions-align-cloud-adoption-framework-well-architected-framework/3a-cloud-adoption-framework-secure-ai" target="_blank" rel="noopener">Microsoft Learn training: SC-100 module on designing solutions that align with CAF and the Well-Architected Framework (secure AI adoption unit)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The self-paced unit on the six phases and four decisions</span>
+</div><div class="lk" data-s="cloud adoption framework ai adoption scenario, six-phase security guidance the six phases of microsoft&#x27;s ai adoption guidance guidance to set up your organization&#x27;s ai governance process https://learn.microsoft.com/azure/cloud-adoption-framework/ai/govern" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/cloud-adoption-framework/ai/govern" target="_blank" rel="noopener">Cloud Adoption Framework AI adoption scenario, six-phase security guidance</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The six phases of Microsoft&#x27;s AI adoption guidance</span>
+</div><div class="lk" data-s="caf ai strategy phase: define ai security objectives and adopt responsible ai principles where ai security objectives and responsible ai rules get set ai strategy - guidance to set your organization&#x27;s ai strategy https://learn.microsoft.com/azure/cloud-adoption-framework/ai/strategy" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/cloud-adoption-framework/ai/strategy" target="_blank" rel="noopener">CAF AI Strategy phase: define AI security objectives and adopt Responsible AI principles</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Where AI security objectives and responsible AI rules get set</span>
+</div><div class="lk" data-s="caf ai plan and ready phases: ai skills gap, ai-specific controls, secure ai infrastructure and ai security baselines plan owns the skills gap; ready owns baselines and infra these pages now say microsoft foundry and foundry tools, not azure ai foundry. plan for ai adoption https://learn.microsoft.com/azure/cloud-adoption-framework/ai/plan" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/cloud-adoption-framework/ai/plan" target="_blank" rel="noopener">CAF AI Plan and Ready phases: AI skills gap, AI-specific controls, secure AI infrastructure and AI security baselines</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Plan owns the skills gap; Ready owns baselines and infra</span>
+<p class="lk__n">These pages now say Microsoft Foundry and Foundry Tools, not Azure AI Foundry.</p></div><div class="lk" data-s="caf secure ai: discover ai security risks, protect resources and data, detect threats the phase where the tooling finally shows up guidance to set up your organization&#x27;s ai security process https://learn.microsoft.com/azure/cloud-adoption-framework/ai/secure" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/cloud-adoption-framework/ai/secure" target="_blank" rel="noopener">CAF Secure AI: discover AI security risks, protect resources and data, detect threats</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The phase where the tooling finally shows up</span>
+</div><div class="lk" data-s="caf manage ai: monitor for threats and maintain ai security posture monitoring, models, cost, data and continuity after launch guidance to set up your organization&#x27;s ai management process https://learn.microsoft.com/azure/cloud-adoption-framework/ai/manage" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/cloud-adoption-framework/ai/manage" target="_blank" rel="noopener">CAF Manage AI: monitor for threats and maintain AI security posture</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Monitoring, models, cost, data and continuity after launch</span>
+</div><div class="lk" data-s="extend existing governance and risk frameworks rather than standing up a parallel ai program mapping ai requirements onto policies you already have guidance to set your organization&#x27;s responsible ai policies https://learn.microsoft.com/azure/cloud-adoption-framework/ai/responsible-ai-policies" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/cloud-adoption-framework/ai/responsible-ai-policies" target="_blank" rel="noopener">Extend existing governance and risk frameworks rather than standing up a parallel AI program</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Mapping AI requirements onto policies you already have</span>
+</div><div class="lk" data-s="microsoft responsible ai: the six principles (fairness, reliability and safety, privacy and security, inclusiveness, transparency, accountability) the six principles by name, straight from the source responsible ai at microsoft https://www.microsoft.com/ai/responsible-ai" data-f="">
+<a class="lk__a" href="https://www.microsoft.com/ai/responsible-ai" target="_blank" rel="noopener">Microsoft Responsible AI: the six principles (fairness, reliability and safety, privacy and security, inclusiveness, transparency, accountability)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The six principles by name, straight from the source</span>
+</div><div class="lk" data-s="microsoft responsible ai standard and the responsible ai governance program six domains, 14 goals, and the bodies that govern them artificial intelligence overview https://learn.microsoft.com/compliance/assurance/assurance-artificial-intelligence" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/compliance/assurance/assurance-artificial-intelligence" target="_blank" rel="noopener">Microsoft Responsible AI Standard and the Responsible AI governance program</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Six domains, 14 goals, and the bodies that govern them</span>
+</div><div class="lk" data-s="architect decision 1: protect training data, model weights, and inference endpoints (azure ai workload security best practices) training data, model weights and inference endpoints the controls it cites are microsoft cloud security benchmark v2, still preview. azure ai security best practices https://learn.microsoft.com/azure/security/fundamentals/ai-security-best-practices" data-f="preview">
+<a class="lk__a" href="https://learn.microsoft.com/azure/security/fundamentals/ai-security-best-practices" target="_blank" rel="noopener">Architect decision 1: protect training data, model weights, and inference endpoints (Azure AI workload security best practices)</a>
+<span class="lk__chips"><span class="chip chip--preview">PREVIEW</span></span>
+<span class="lk__d">Training data, model weights and inference endpoints</span>
+<p class="lk__n">The controls it cites are Microsoft cloud security benchmark v2, still preview.</p></div><div class="lk" data-s="ai shared responsibility model across saas, paas, and iaas who owns what across saas, paas and iaas ai artificial intelligence (ai) shared responsibility model https://learn.microsoft.com/azure/security/fundamentals/shared-responsibility-ai" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/security/fundamentals/shared-responsibility-ai" target="_blank" rel="noopener">AI shared responsibility model across SaaS, PaaS, and IaaS</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Who owns what across SaaS, PaaS and IaaS AI</span>
+</div><div class="lk" data-s="integrate ai risk assessment into existing threat modeling prompt injection and leakage join the model you already have complete ai threat modeling https://learn.microsoft.com/security/zero-trust/sfi/threat-modeling-ai" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/security/zero-trust/sfi/threat-modeling-ai" target="_blank" rel="noopener">Integrate AI risk assessment into existing threat modeling</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Prompt injection and leakage join the model you already have</span>
+</div><div class="lk" data-s="named ai application-layer attack classes: direct and indirect prompt injection, data leakage through a plugin action, insecure plugin design 14 techniques mapped to owasp llm and mitre atlas names catalog of ai attack techniques (caat) https://learn.microsoft.com/security/zero-trust/catalog-ai-attack-techniques/catalog-ai-attack-techniques" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/security/zero-trust/catalog-ai-attack-techniques/catalog-ai-attack-techniques" target="_blank" rel="noopener">Named AI application-layer attack classes: direct and indirect prompt injection, data leakage through a plugin action, insecure plugin design</a>
+<span class="lk__chips"></span>
+<span class="lk__d">14 techniques mapped to OWASP LLM and MITRE ATLAS names</span>
+</div><div class="lk" data-s="model provenance and the ai supply chain: approved models only, verified, with a registry that records origin and sign-off (microsoft foundry model catalog) the approved-model gate, and the catalog it runs against it&#x27;s microsoft foundry now; the older article sits under microsoft foundry classic. overview of microsoft foundry models https://learn.microsoft.com/azure/foundry/concepts/foundry-models-overview" data-f="renamed">
+<a class="lk__a" href="https://learn.microsoft.com/azure/foundry/concepts/foundry-models-overview" target="_blank" rel="noopener">Model provenance and the AI supply chain: approved models only, verified, with a registry that records origin and sign-off (Microsoft Foundry model catalog)</a>
+<span class="lk__chips"><span class="chip chip--renamed">RENAMED</span></span>
+<span class="lk__d">The approved-model gate, and the catalog it runs against</span>
+<p class="lk__n">It&#x27;s Microsoft Foundry now; the older article sits under Microsoft Foundry classic.</p></div><div class="lk" data-s="microsoft foundry content filtering and safety systems (multi-layered filtering at input, processing, and output; safety system messages / meta-prompts) cleans up what a model says, not what the model is microsoft foundry, not azure ai foundry. agent guardrails and pii detection are preview. guardrails and controls overview in microsoft foundry https://learn.microsoft.com/azure/foundry/guardrails/guardrails-overview" data-f="preview renamed">
+<a class="lk__a" href="https://learn.microsoft.com/azure/foundry/guardrails/guardrails-overview" target="_blank" rel="noopener">Microsoft Foundry content filtering and safety systems (multi-layered filtering at input, processing, and output; safety system messages / meta-prompts)</a>
+<span class="lk__chips"><span class="chip chip--preview">PREVIEW</span><span class="chip chip--renamed">RENAMED</span></span>
+<span class="lk__d">Cleans up what a model says, not what the model is</span>
+<p class="lk__n">Microsoft Foundry, not Azure AI Foundry. Agent guardrails and PII detection are preview.</p></div><div class="lk" data-s="architect decision 4: ai alerts into the siem, ai systems in incident response playbooks, soc analyst readiness jailbreak attempts, leaked credentials, odd tool invocations alerts for ai services https://learn.microsoft.com/azure/defender-for-cloud/alerts-ai-workloads" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/defender-for-cloud/alerts-ai-workloads" target="_blank" rel="noopener">Architect decision 4: AI alerts into the SIEM, AI systems in incident response playbooks, SOC analyst readiness</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Jailbreak attempts, leaked credentials, odd tool invocations</span>
+</div><div class="lk" data-s="shadow ai: discovering and governing unsanctioned ai app usage discovering unsanctioned ai use, where blocking is step two prevent data leak to shadow ai https://learn.microsoft.com/purview/deploymentmodels/depmod-data-leak-shadow-ai-intro" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/purview/deploymentmodels/depmod-data-leak-shadow-ai-intro" target="_blank" rel="noopener">Shadow AI: discovering and governing unsanctioned AI app usage</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Discovering unsanctioned AI use, where blocking is step two</span>
+</div><div class="lk" data-s="microsoft defender for cloud apps: cloud app discovery and the generative ai app catalog which consumer ai services your people already use tutorial: discover and manage shadow it https://learn.microsoft.com/defender-cloud-apps/tutorial-shadow-it" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/defender-cloud-apps/tutorial-shadow-it" target="_blank" rel="noopener">Microsoft Defender for Cloud Apps: cloud app discovery and the generative AI app catalog</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Which consumer AI services your people already use</span>
+</div><div class="lk" data-s="microsoft purview data security posture management (dspm) for ai sees sensitive data moving into ai prompts the old page is dspm for ai (classic); the unified replacement is preview. learn about data security posture management https://learn.microsoft.com/purview/data-security-posture-management-learn-about" data-f="preview renamed">
+<a class="lk__a" href="https://learn.microsoft.com/purview/data-security-posture-management-learn-about" target="_blank" rel="noopener">Microsoft Purview Data Security Posture Management (DSPM) for AI</a>
+<span class="lk__chips"><span class="chip chip--preview">PREVIEW</span><span class="chip chip--renamed">RENAMED</span></span>
+<span class="lk__d">Sees sensitive data moving into AI prompts</span>
+<p class="lk__n">The old page is DSPM for AI (classic); the unified replacement is preview.</p></div><div class="lk" data-s="ai security posture management in microsoft defender for cloud (defender cspm), the ai bill of materials, and multicloud reach into amazon bedrock and google vertex ai discovery of ai workloads across azure, bedrock and vertex ai agent discovery is preview and needs a microsoft agent 365 license from july 1, 2026. overview - ai security posture management https://learn.microsoft.com/azure/defender-for-cloud/ai-security-posture" data-f="preview dated">
+<a class="lk__a" href="https://learn.microsoft.com/azure/defender-for-cloud/ai-security-posture" target="_blank" rel="noopener">AI security posture management in Microsoft Defender for Cloud (Defender CSPM), the AI Bill of Materials, and multicloud reach into Amazon Bedrock and Google Vertex AI</a>
+<span class="lk__chips"><span class="chip chip--preview">PREVIEW</span><span class="chip chip--dated">DATED</span></span>
+<span class="lk__d">Discovery of AI workloads across Azure, Bedrock and Vertex AI</span>
+<p class="lk__n">Agent discovery is preview and needs a Microsoft Agent 365 license from July 1, 2026.</p></div><div class="lk" data-s="threat protection for ai workloads in microsoft defender for cloud (ai runtime alerts, attack path analysis for ai resources) runtime alerts on ai resources, in the defender portal ai threat protection is ga, but individual alerts can still be preview. ai threat protection in microsoft defender for cloud https://learn.microsoft.com/azure/defender-for-cloud/ai-threat-protection" data-f="preview">
+<a class="lk__a" href="https://learn.microsoft.com/azure/defender-for-cloud/ai-threat-protection" target="_blank" rel="noopener">Threat protection for AI workloads in Microsoft Defender for Cloud (AI runtime alerts, attack path analysis for AI resources)</a>
+<span class="lk__chips"><span class="chip chip--preview">PREVIEW</span></span>
+<span class="lk__d">Runtime alerts on AI resources, in the Defender portal</span>
+<p class="lk__n">AI threat protection is GA, but individual alerts can still be preview.</p></div><div class="lk" data-s="ai model security (preview) and the defender portal cloud asset inventory ai tab (assets &gt; cloud &gt; ai &gt; ai models) preview scanning for malware, unsafe operators, leaked secrets preview. scope is azure machine learning registries and workspaces; licensing may change. ai model security (preview) https://learn.microsoft.com/azure/defender-for-cloud/ai-model-security" data-f="preview">
+<a class="lk__a" href="https://learn.microsoft.com/azure/defender-for-cloud/ai-model-security" target="_blank" rel="noopener">AI model security (Preview) and the Defender portal cloud asset inventory AI tab (Assets &gt; Cloud &gt; AI &gt; AI models)</a>
+<span class="lk__chips"><span class="chip chip--preview">PREVIEW</span></span>
+<span class="lk__d">Preview scanning for malware, unsafe operators, leaked secrets</span>
+<p class="lk__n">Preview. Scope is Azure Machine Learning registries and workspaces; licensing may change.</p></div><div class="lk" data-s="ai agent discovery and agent security posture, and the microsoft agent 365 licensing change agent security moved out of defender cspm to agent 365 agent-level discovery and posture need agent 365, ga for commercial since may 1, 2026. transition microsoft copilot studio and microsoft foundry agent security capabilities to microsoft agent 365 https://learn.microsoft.com/defender-xdr/security-for-ai/transition-agent-security-to-agent-365" data-f="preview dated">
+<a class="lk__a" href="https://learn.microsoft.com/defender-xdr/security-for-ai/transition-agent-security-to-agent-365" target="_blank" rel="noopener">AI agent discovery and agent security posture, and the Microsoft Agent 365 licensing change</a>
+<span class="lk__chips"><span class="chip chip--preview">PREVIEW</span><span class="chip chip--dated">DATED</span></span>
+<span class="lk__d">Agent security moved out of Defender CSPM to Agent 365</span>
+<p class="lk__n">Agent-level discovery and posture need Agent 365, GA for Commercial since May 1, 2026.</p></div><div class="lk" data-s="portal surface: defender for cloud, cloud security explorer, &#x27;ai workloads and models in use&#x27; query template a prebuilt query for ai workloads and models in use discover generative ai workloads https://learn.microsoft.com/azure/defender-for-cloud/identify-ai-workload-model" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/defender-for-cloud/identify-ai-workload-model" target="_blank" rel="noopener">Portal surface: Defender for Cloud, Cloud Security Explorer, &#x27;AI workloads and models in use&#x27; query template</a>
+<span class="lk__chips"></span>
+<span class="lk__d">A prebuilt query for AI workloads and models in use</span>
+</div><div class="lk" data-s="portal surface: defender for cloud data and ai security dashboard, &#x27;ai closer look&#x27; section ai discovery, critical issues, internet-exposed resources data and ai security dashboard https://learn.microsoft.com/azure/defender-for-cloud/data-aware-security-dashboard-overview" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/defender-for-cloud/data-aware-security-dashboard-overview" target="_blank" rel="noopener">Portal surface: Defender for Cloud Data and AI security dashboard, &#x27;AI closer look&#x27; section</a>
+<span class="lk__chips"></span>
+<span class="lk__d">AI discovery, critical issues, internet-exposed resources</span>
+</div></div></section><section class="obj" id="o1-3-5">
+<div class="obj__h"><span class="obj__id">1.3.5</span>
+<span class="obj__t">Design a DevSecOps process that aligns with best practices in the Microsoft Cloud Adoption Framework for Azure (CAF)</span>
+<span class="obj__where">Module 4, Clips 2-3</span></div>
+<div class="links"><div class="lk" data-s="sc-100 microsoft cybersecurity architect exam page and study guide (skills measured) passing score 700, no retirement date, and the skills measured exam updated july 28, 2026; weightings are 20-25 / 25-30 / 25-30 / 20-25. exam sc-100: microsoft cybersecurity architect https://learn.microsoft.com/credentials/certifications/exams/sc-100/" data-f="dated">
+<a class="lk__a" href="https://learn.microsoft.com/credentials/certifications/exams/sc-100/" target="_blank" rel="noopener">SC-100 Microsoft Cybersecurity Architect exam page and study guide (skills measured)</a>
+<span class="lk__chips"><span class="chip chip--dated">DATED</span></span>
+<span class="lk__d">Passing score 700, no retirement date, and the skills measured</span>
+<p class="lk__n">Exam updated July 28, 2026; weightings are 20-25 / 25-30 / 25-30 / 20-25.</p></div><div class="lk" data-s="microsoft learn training: design secure devops and devsecops processes, and design and implement standards to secure application development the two official units on devsecops and app-dev standards one unit&#x27;s &#x27;mcsbv2&#x27; table lists v1 control names; take names from the live v2 page. design secure devsecops processes https://learn.microsoft.com/training/modules/design-solutions-align-cloud-adoption-framework-well-architected-framework/8a-design-devsecops-processes" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/training/modules/design-solutions-align-cloud-adoption-framework-well-architected-framework/8a-design-devsecops-processes" target="_blank" rel="noopener">Microsoft Learn training: design secure DevOps and DevSecOps processes, and design and implement standards to secure application development</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The two official units on DevSecOps and app-dev standards</span>
+<p class="lk__n">One unit&#x27;s &#x27;MCSBv2&#x27; table lists v1 control names; take names from the live v2 page.</p></div><div class="lk" data-s="microsoft learn sc-100t00 learning path: microsoft cybersecurity architect microsoft&#x27;s own course structure, four learning paths deep microsoft cybersecurity architect (course sc-100t00-a) https://learn.microsoft.com/training/courses/sc-100t00" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/training/courses/sc-100t00" target="_blank" rel="noopener">Microsoft Learn SC-100T00 learning path: Microsoft Cybersecurity Architect</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Microsoft&#x27;s own course structure, four learning paths deep</span>
+</div><div class="lk" data-s="caf devsecops controls: the four-stage model (secure the design, secure the code, secure the pipeline, secure operations) where &#x27;shift left&#x27; stops being hand-waving: four attach points improve landing zone security https://learn.microsoft.com/azure/cloud-adoption-framework/ready/considerations/landing-zone-security" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/cloud-adoption-framework/ready/considerations/landing-zone-security" target="_blank" rel="noopener">CAF DevSecOps controls: the four-stage model (secure the design, secure the code, secure the pipeline, secure operations)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Where &#x27;shift left&#x27; stops being hand-waving: four attach points</span>
+</div><div class="lk" data-s="secure the design stage: threat modeling, security plugins in the ide, precommit hooks, peer review the cheapest place a flaw ever gets fixed secure devops environments for zero trust https://learn.microsoft.com/security/zero-trust/develop/secure-devops-environments-zero-trust" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/security/zero-trust/develop/secure-devops-environments-zero-trust" target="_blank" rel="noopener">Secure the design stage: threat modeling, security plugins in the IDE, precommit hooks, peer review</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The cheapest place a flaw ever gets fixed</span>
+</div><div class="lk" data-s="threat modeling as a practice (stride and the microsoft threat modeling tool), and mcsb ds-1 &#x27;conduct threat modeling&#x27; stride per element, in microsoft&#x27;s own modeling tool mcsb v2 is preview. ds-1 is named the same in v1 and v2; name the version for others. microsoft threat modeling tool https://learn.microsoft.com/azure/security/develop/threat-modeling-tool" data-f="preview">
+<a class="lk__a" href="https://learn.microsoft.com/azure/security/develop/threat-modeling-tool" target="_blank" rel="noopener">Threat modeling as a practice (STRIDE and the Microsoft Threat Modeling Tool), and MCSB DS-1 &#x27;Conduct threat modeling&#x27;</a>
+<span class="lk__chips"><span class="chip chip--preview">PREVIEW</span></span>
+<span class="lk__d">STRIDE per element, in Microsoft&#x27;s own modeling tool</span>
+<p class="lk__n">MCSB v2 is preview. DS-1 is named the same in v1 and v2; name the version for others.</p></div><div class="lk" data-s="secure the code stage: vulnerability scanning in centralized repositories repository scanning, fixed in the pull request securing source code with github advanced security https://learn.microsoft.com/security/zero-trust/sfi/secure-source-code-github-advanced-security" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/security/zero-trust/sfi/secure-source-code-github-advanced-security" target="_blank" rel="noopener">Secure the code stage: vulnerability scanning in centralized repositories</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Repository scanning, fixed in the pull request</span>
+</div><div class="lk" data-s="secure the pipeline stage: build and release automation, standardization, and identity verification on every pipeline action the pipeline as an asset worth attacking, and the real attacks mcsb v2, which names this ds-3, is still preview. secure the devops platform environment for zero trust https://learn.microsoft.com/security/zero-trust/develop/secure-devops-platform-environment-zero-trust" data-f="preview">
+<a class="lk__a" href="https://learn.microsoft.com/security/zero-trust/develop/secure-devops-platform-environment-zero-trust" target="_blank" rel="noopener">Secure the pipeline stage: build and release automation, standardization, and identity verification on every pipeline action</a>
+<span class="lk__chips"><span class="chip chip--preview">PREVIEW</span></span>
+<span class="lk__d">The pipeline as an asset worth attacking, and the real attacks</span>
+<p class="lk__n">MCSB v2, which names this DS-3, is still preview.</p></div><div class="lk" data-s="secure operations stage: infrastructure scanning and penetration testing in production no pre-approval needed, but the rules of engagement bind you penetration testing https://learn.microsoft.com/azure/security/fundamentals/pen-testing" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/security/fundamentals/pen-testing" target="_blank" rel="noopener">Secure operations stage: infrastructure scanning and penetration testing in production</a>
+<span class="lk__chips"></span>
+<span class="lk__d">No pre-approval needed, but the Rules of Engagement bind you</span>
+</div><div class="lk" data-s="shift-left, defined: the four traditional-versus-shift-left pairs (review at release, manual testing, remediation in production, security as a gate) the four traditional-versus-shift-left pairs, defined shift devops to devsecops https://learn.microsoft.com/security/zero-trust/security-adoption-discipline-development-security" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/security/zero-trust/security-adoption-discipline-development-security" target="_blank" rel="noopener">Shift-left, defined: the four traditional-versus-shift-left pairs (review at release, manual testing, remediation in production, security as a gate)</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The four traditional-versus-shift-left pairs, defined</span>
+</div><div class="lk" data-s="caf secure methodology: integrity and automation, &#x27;manual security gates are replaced by automated controls embedded in ci/cd pipelines&#x27; the security gate stops being a person, not a gate perform your cloud adoption securely https://learn.microsoft.com/azure/cloud-adoption-framework/secure/adopt" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/cloud-adoption-framework/secure/adopt" target="_blank" rel="noopener">CAF Secure methodology: integrity and automation, &#x27;manual security gates are replaced by automated controls embedded in CI/CD pipelines&#x27;</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The security gate stops being a person, not a gate</span>
+</div><div class="lk" data-s="the block-versus-report gate decision: code signing, secrets detection, and critical dependency vulnerabilities block; style findings and advisories report which findings block a merge and which only report adopt secure development planning imperatives https://learn.microsoft.com/security/zero-trust/security-adoption-discipline-development-imperatives" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/security/zero-trust/security-adoption-discipline-development-imperatives" target="_blank" rel="noopener">The block-versus-report gate decision: code signing, secrets detection, and critical dependency vulnerabilities block; style findings and advisories report</a>
+<span class="lk__chips"></span>
+<span class="lk__d">Which findings block a merge and which only report</span>
+</div><div class="lk" data-s="github advanced security: code scanning with codeql, secret scanning with push protection, and dependency review codeql scanning, secret scanning push protection, dep review now also sold split as github secret protection and github code security. configure github advanced security for azure devops https://learn.microsoft.com/azure/devops/repos/security/configure-github-advanced-security-features" data-f="">
+<a class="lk__a" href="https://learn.microsoft.com/azure/devops/repos/security/configure-github-advanced-security-features" target="_blank" rel="noopener">GitHub Advanced Security: code scanning with CodeQL, secret scanning with push protection, and dependency review</a>
+<span class="lk__chips"></span>
+<span class="lk__d">CodeQL scanning, secret scanning push protection, dep review</span>
+<p class="lk__n">Now also sold split as GitHub Secret Protection and GitHub Code Security.</p></div><div class="lk" data-s="devops security in microsoft defender for cloud (connecting azure devops and github, devops security posture and findings) pipeline findings on the same posture surface as the estate connector-based auth is ga; the token-based devops ingestion integration is preview. overview of microsoft defender for cloud devops security https://learn.microsoft.com/azure/defender-for-cloud/defender-for-devops-introduction" data-f="preview">
+<a class="lk__a" href="https://learn.microsoft.com/azure/defender-for-cloud/defender-for-devops-introduction" target="_blank" rel="noopener">DevOps security in Microsoft Defender for Cloud (connecting Azure DevOps and GitHub, DevOps security posture and findings)</a>
+<span class="lk__chips"><span class="chip chip--preview">PREVIEW</span></span>
+<span class="lk__d">Pipeline findings on the same posture surface as the estate</span>
+<p class="lk__n">Connector-based auth is GA; the token-based DevOps ingestion integration is preview.</p></div><div class="lk" data-s="microsoft security development lifecycle (sdl): the 10 practices the practice set the four-stage model grew out of no version number, 10 practices. some learn pages still show the older five-phase sdl. security development lifecycle (sdl) practices https://www.microsoft.com/securityengineering/sdl/practices" data-f="">
+<a class="lk__a" href="https://www.microsoft.com/securityengineering/sdl/practices" target="_blank" rel="noopener">Microsoft Security Development Lifecycle (SDL): the 10 practices</a>
+<span class="lk__chips"></span>
+<span class="lk__d">The practice set the four-stage model grew out of</span>
+<p class="lk__n">No version number, 10 practices. Some Learn pages still show the older five-phase SDL.</p></div></div></section></section>
+
+    <p class="empty" id="empty" hidden>Nothing matches. Clear the filter box or switch off a status filter.</p>
+
+    <footer>
+      <p>Microsoft republishes documentation constantly. If a link has moved, search its title on learn.microsoft.com.</p>
+      <p>&copy; 2026 Tim Warner &middot; <a href="https://techtrainertim.com">TechTrainerTim.com</a>. Linked documentation is the property of Microsoft Corporation.</p>
+    </footer>
+  </main>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var q=document.getElementById('q'), countEl=document.getElementById('count'),
+      emptyEl=document.getElementById('empty');
+  var links=[].slice.call(document.querySelectorAll('.lk')),
+      objs=[].slice.call(document.querySelectorAll('.obj')),
+      grps=[].slice.call(document.querySelectorAll('.grp')),
+      btns=[].slice.call(document.querySelectorAll('.filters button'));
+  var total=links.length, active={};
+
+  function apply(){
+    var term=(q.value||'').trim().toLowerCase();
+    var flags=Object.keys(active).filter(function(k){return active[k];});
+    var shown=0;
+    links.forEach(function(l){
+      var okT=!term||l.getAttribute('data-s').indexOf(term)!==-1;
+      var f=l.getAttribute('data-f')||'';
+      var okF=!flags.length||flags.every(function(x){return f.indexOf(x)!==-1;});
+      l.hidden=!(okT&&okF);
+      if(!l.hidden) shown++;
+    });
+    // Hide headings that have nothing left under them.
+    objs.forEach(function(o){o.hidden=!o.querySelector('.lk:not([hidden])');});
+    grps.forEach(function(g){g.hidden=!g.querySelector('.obj:not([hidden])');});
+    countEl.textContent = shown===total ? total+' links' : shown+' of '+total+' links';
+    emptyEl.hidden = shown!==0;
+  }
+  q.addEventListener('input',apply);
+  q.addEventListener('keydown',function(e){if(e.key==='Escape'){q.value='';apply();}});
+  btns.forEach(function(b){
+    b.addEventListener('click',function(){
+      var f=b.getAttribute('data-flag');
+      active[f]=!active[f];
+      b.setAttribute('aria-pressed',active[f]?'true':'false');
+      apply();
+    });
+  });
+  document.addEventListener('keydown',function(e){
+    if(e.key==='/'&&document.activeElement!==q){e.preventDefault();q.focus();}
+  });
+  apply();
+})();
+</script>
+</body>
+</html>

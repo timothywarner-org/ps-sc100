@@ -1,0 +1,277 @@
+#!/usr/bin/env bash
+# =============================================================================
+# Deploy-C3M02ServerEstate.cloudshell.sh: run as a FILE in Azure Cloud Shell (Bash).
+#
+# GENERATED FILE. The source is the iac folder next to this script
+# (main.bicep, servers.bicep, archost.bicep, arc-host-cloud-init.yaml). The
+# templates are embedded below so ONE upload carries everything. You don't
+# need to rebuild it. If you change a template, rebuild from the folder that
+# holds this script with:  python iac/build_cloudshell.py
+#
+# Builds the lab for the SC-100 Course 3 Module 2 demo, "Read server coverage
+# and plan fit in Defender for Cloud": a small Globomantics server estate whose
+# machines differ in exactly the two ways the module teaches, plan and
+# connection path.
+#
+#   rg-globomantics-c3m02 (what the demo reads)
+#     vm-glb-erp01   Windows Server 2025, Azure VM   Plan 2, inherited
+#     vm-glb-web01   Ubuntu, Azure VM, storefront    Plan 1, set on the VM
+#     vm-glb-test01  Ubuntu, Azure VM, test          Plan 1, set on the VM
+#     glb-dc-file01  Azure Arc-enabled server        Plan 2, inherited
+#   rg-globomantics-c3m02-host (plumbing the demo never shows)
+#     vm-glb-arc-host01  the Azure VM that plays glb-dc-file01 (evaluation only)
+#
+# RUN IT AS A FILE, NEVER BY PASTING ITS LINES. It uses 'set -e' and 'exit',
+# which close an interactive shell and take the output with them. In Cloud
+# Shell: Manage files > Upload this file, then
+#   bash Deploy-C3M02ServerEstate.cloudshell.sh                  # what-if only
+#   MODE=deploy bash Deploy-C3M02ServerEstate.cloudshell.sh      # build it
+#   MODE=teardown bash Deploy-C3M02ServerEstate.cloudshell.sh    # remove it
+# It runs unchanged in any bash with the Azure CLI, openssl and GNU date (WSL,
+# Git Bash).
+#
+# OPTIONS, set as environment variables in front of the command:
+#   MODE             whatif (the default), deploy, or teardown
+#   SUBSCRIPTION_ID  work in this subscription. It becomes the Azure CLI's
+#                    default. Unset, the CLI's current subscription is used.
+#   LOCATION         Azure region, default westus2. Needs 5 free B-series vCPUs.
+#   SHUTDOWN_TZ      Windows time zone ID for the nightly 11 PM VM shutdown,
+#                    default 'Central Standard Time'.
+#   Example:
+#   MODE=deploy LOCATION=eastus2 SHUTDOWN_TZ='Eastern Standard Time' bash Deploy-C3M02ServerEstate.cloudshell.sh
+#
+# MODES. The default does nothing but show the plan:
+#   (unset)          what-if only. Creates NOTHING. Run it first, always.
+#   MODE=deploy      creates the lab, or re-asserts it if it already exists.
+#   MODE=teardown    removes the onboarding app registration, then both groups.
+#
+# PREREQUISITES
+#   * The Azure CLI, signed in (Cloud Shell already is). Built and checked with
+#     Azure CLI 2.85; run az upgrade if yours is older.
+#   * Owner on the subscription, or Contributor plus User Access Administrator,
+#     because deploy creates a role assignment.
+#   * Permission to create app registrations in Microsoft Entra ID.
+#   * Microsoft Defender for Servers Plan 2 on at subscription scope. Two lab
+#     servers inherit it and two override it with Plan 1, and that difference
+#     is the demo. Deploy checks and stops rather than change a subscription-
+#     wide plan on your behalf. Plan 2 at subscription scope covers every server
+#     in the subscription, not just this lab's. To turn it on:
+#       az security pricing create --name VirtualMachines --tier standard --subplan P2
+#
+# WHAT DEPLOY WRITES OUTSIDE AZURE RESOURCE GROUPS, so nothing surprises you:
+#   * One Microsoft Entra app and service principal, sp-globomantics-c3m02-arc,
+#     holding ONLY "Azure Connected Machine Onboarding" on rg-globomantics-c3m02,
+#     with a secret that expires ONE DAY after it's minted. It's how the host
+#     connects itself to Arc (Course 3 Module 1 teaches this exact method).
+#     Teardown deletes it. It's safe to delete early once glb-dc-file01 shows
+#     Connected: the agent authenticates with its own identity after onboarding.
+#   * The Microsoft.HybridCompute, Microsoft.GuestConfiguration and
+#     Microsoft.HybridConnectivity resource providers, registered if they
+#     aren't already. That's a subscription setting, not a resource.
+#
+# SECRETS: the Windows admin password and the service principal secret are
+# generated here, handed to the deployment as parameters, and never printed or
+# written to a file. Linux sign-in is key-only, and the private key is shredded
+# straight away: nothing in this module needs a shell on any machine.
+#
+# TIMING: the deploy takes 10 to 15 minutes, and the host connects itself to
+# Arc a few minutes after it boots. Defender for Endpoint onboarding and the
+# Defender for Cloud inventory run on their own cycles, so give the portal
+# views up to 24 hours. The plan table works as soon as all four servers exist.
+# Upload Show-C3M02ServerPlans.ps1 too, then run:
+#   pwsh -NoProfile -File ./Show-C3M02ServerPlans.ps1
+#
+# COST WARNING: this creates billable resources. Four small VMs while they run,
+# their disks, and Defender for Servers on three Azure VMs and one Arc machine.
+# Deallocating stops compute, not disks or the Arc machine's plan. Check current
+# rates on Microsoft's Azure and Defender for Cloud pricing pages, and run
+# MODE=teardown as soon as you're done.
+#
+# CLEANUP BY HAND, if you'd rather not use MODE=teardown:
+#   az ad app delete --id "$(az ad app list --display-name sp-globomantics-c3m02-arc --query '[0].appId' -o tsv)"
+#   az group delete --name rg-globomantics-c3m02 --yes --no-wait
+#   az group delete --name rg-globomantics-c3m02-host --yes --no-wait
+# If you turned on Defender for Servers Plan 2 only for this lab, turn it off:
+#   az security pricing create --name VirtualMachines --tier free
+# =============================================================================
+set -euo pipefail
+umask 077
+
+MODE="${MODE:-whatif}"
+LOC="${LOCATION:-westus2}"
+SHUTDOWN_TZ="${SHUTDOWN_TZ:-Central Standard Time}"
+RG='rg-globomantics-c3m02'
+HOST_RG='rg-globomantics-c3m02-host'
+SP_NAME='sp-globomantics-c3m02-arc'
+ONBOARD_ROLE='b64e21ea-ac4e-4cdf-9dc9-5b892992bee7'   # Azure Connected Machine Onboarding: built-in role, same ID in every tenant
+VCPUS_NEEDED=5                                         # B2s (2) + three B1ms (1 each)
+# A private scratch folder outside your home directory: nothing here needs to outlive the run.
+WORK="$(mktemp -d "${TMPDIR:-/tmp}/c3m02.XXXXXX")"
+trap 'find "$WORK" -type f -exec shred -u {} + 2>/dev/null; rm -rf "$WORK"' EXIT
+
+case "$MODE" in
+  whatif|deploy|teardown) ;;
+  *) echo "[FAIL] MODE must be whatif, deploy, or teardown (got '$MODE')."; exit 2 ;;
+esac
+
+# Work in YOUR subscription: the one you name, or the CLI's current one. Nothing in this lab
+# is tied to a particular tenant or subscription.
+if [ -n "${SUBSCRIPTION_ID:-}" ]; then
+  az account set --subscription "$SUBSCRIPTION_ID"
+fi
+SUB="$(az account show --query id -o tsv)"
+if [ -z "$SUB" ]; then
+  echo "[FAIL] no Azure CLI sign-in. Run az login, then rerun."; exit 1
+fi
+echo "[INFO] mode=$MODE  identity=$(az account show --query user.name -o tsv)  subscription=$(az account show --query name -o tsv)  location=$LOC"
+
+# --- TEARDOWN ----------------------------------------------------------------
+# Order: the app registration first (it's the only thing outside the groups),
+# then the groups, refusing any group whose ownership tag isn't this lab's.
+if [ "$MODE" = "teardown" ]; then
+  APP_ID="$(az ad app list --display-name "$SP_NAME" --query "[0].appId" -o tsv)"
+  if [ -n "$APP_ID" ]; then
+    az ad app delete --id "$APP_ID"
+    echo "[OK] $SP_NAME deleted"
+  else
+    echo "[OK] $SP_NAME already absent"
+  fi
+  for g in "$RG" "$HOST_RG"; do
+    if [ "$(az group exists -n "$g")" != "true" ]; then echo "[OK] $g already absent"; continue; fi
+    if [ "$(az group show -n "$g" --query tags.course -o tsv)" != "SC100-C3M02" ]; then
+      echo "[FAIL] $g ownership tag does not match this lab. Refusing to delete it."; exit 1
+    fi
+    az group delete -n "$g" --yes
+    echo "[OK] $g deleted"
+  done
+  echo "[NEXT] If you turned on Defender for Servers Plan 2 only for this lab: az security pricing create --name VirtualMachines --tier free"
+  exit 0
+fi
+
+# --- CHECKS: everything the deploy would otherwise discover by failing --------
+USED="$(az vm list-usage -l "$LOC" --query "[?name.value=='cores'].currentValue | [0]" -o tsv)"
+LIMIT="$(az vm list-usage -l "$LOC" --query "[?name.value=='cores'].limit | [0]" -o tsv)"
+if [ $((LIMIT - USED)) -lt "$VCPUS_NEEDED" ]; then
+  echo "[FAIL] $LOC has $USED of $LIMIT regional vCPUs in use; the lab needs $VCPUS_NEEDED. Set LOCATION to another region."; exit 1
+fi
+echo "[OK] quota: $LOC cores $USED/$LIMIT, lab needs $VCPUS_NEEDED"
+# Family quota too: every VM here is B-series, and the family limit can bite before the regional one.
+BUSED="$(az vm list-usage -l "$LOC" --query "[?name.value=='standardBSFamily'].currentValue | [0]" -o tsv)"
+BLIMIT="$(az vm list-usage -l "$LOC" --query "[?name.value=='standardBSFamily'].limit | [0]" -o tsv)"
+if [ $((BLIMIT - BUSED)) -lt "$VCPUS_NEEDED" ]; then
+  echo "[FAIL] $LOC B-series family has $BUSED of $BLIMIT vCPUs in use; the lab needs $VCPUS_NEEDED."; exit 1
+fi
+echo "[OK] quota: $LOC B-series family $BUSED/$BLIMIT"
+
+# The lab's whole point is that two VMs OVERRIDE the subscription's plan. If the
+# subscription isn't on Plan 2, the inherited rows read wrong. Turning on a
+# subscription-wide plan is your decision, so what-if only warns and deploy stops.
+PLAN="$(az rest --method get --url "https://management.azure.com/subscriptions/$SUB/providers/Microsoft.Security/pricings/VirtualMachines?api-version=2024-01-01" --query "join('/', [properties.pricingTier, properties.subPlan])" -o tsv)"
+if [ "$PLAN" != "Standard/P2" ]; then
+  if [ "$MODE" = "deploy" ]; then
+    echo "[FAIL] Defender for Servers at subscription scope is '$PLAN', expected Standard/P2. This script won't change it on your behalf. It covers every server in the subscription; to turn it on:"
+    echo "       az security pricing create --name VirtualMachines --tier standard --subplan P2"
+    exit 1
+  fi
+  echo "[WARN] Defender for Servers at subscription scope is '$PLAN'. MODE=deploy needs Standard/P2."
+else
+  echo "[OK] Defender for Servers subscription plan: $PLAN"
+fi
+
+# Azure Arc needs these resource providers registered before glb-dc-file01 can appear.
+for ns in Microsoft.HybridCompute Microsoft.GuestConfiguration Microsoft.HybridConnectivity; do
+  state="$(az provider show -n "$ns" --query registrationState -o tsv)"
+  if [ "$state" != "Registered" ]; then
+    if [ "$MODE" = "deploy" ]; then
+      az provider register -n "$ns" --wait
+      echo "[OK] registered $ns"
+    else
+      echo "[WARN] $ns is $state; MODE=deploy registers it"
+    fi
+  else
+    echo "[OK] provider $ns registered"
+  fi
+done
+
+# --- TEMPLATES: written fresh every run, so this file IS the source it deploys -
+mkdir -p "$WORK"
+@@EMBED@@
+
+# Throwaway SSH key: the API needs a public key; nobody keeps the private one.
+ssh-keygen -t ed25519 -N '' -C 'c3m02-lab-throwaway' -f "$WORK/throwaway" -q
+PUBKEY="$(cat "$WORK/throwaway.pub")"
+shred -u "$WORK/throwaway"
+
+NAME="c3m02-estate-$(date +%Y%m%d%H%M%S)"
+if [ "$MODE" = "whatif" ]; then
+  # What-if creates nothing, but the template still wants every parameter. These
+  # values are random throwaways, so no real or literal secret is ever involved.
+  WHATIF_PW="$(openssl rand -base64 48 | tr -dc 'A-Za-z0-9' | head -c 24)aA1."
+  WHATIF_SECRET="$(openssl rand -hex 16)"
+  echo "[PLAN] what-if only. Nothing is created in this mode."
+  az deployment sub what-if --location "$LOC" --name "$NAME" --template-file "$WORK/main.bicep" \
+    --parameters adminPassword="$WHATIF_PW" sshPublicKey="$PUBKEY" \
+                 arcSpAppId='00000000-0000-0000-0000-000000000000' arcSpSecret="$WHATIF_SECRET" \
+                 location="$LOC" shutdownTimeZone="$SHUTDOWN_TZ"
+  unset WHATIF_PW WHATIF_SECRET
+  echo "[NEXT] To build it: MODE=deploy bash $(basename "$0")"
+  exit 0
+fi
+
+# --- DEPLOY --------------------------------------------------------------------
+# The groups first, because the onboarding role is scoped to one of them.
+for g in "$RG" "$HOST_RG"; do
+  if [ "$(az group exists -n "$g")" = "true" ] && [ "$(az group show -n "$g" --query tags.course -o tsv)" != "SC100-C3M02" ]; then
+    echo "[FAIL] $g already exists and isn't tagged course=SC100-C3M02. Refusing to touch it."; exit 1
+  fi
+  az group create -n "$g" -l "$LOC" --tags course=SC100-C3M02 company=Globomantics purpose=demo-fixture teardown=after-course -o none
+done
+RG_ID="$(az group show -n "$RG" --query id -o tsv)"
+
+# Onboarding service principal: create once, then mint a ONE-DAY secret every run.
+APP_ID="$(az ad app list --display-name "$SP_NAME" --query "[0].appId" -o tsv)"
+if [ -z "$APP_ID" ]; then
+  APP_ID="$(az ad app create --display-name "$SP_NAME" --query appId -o tsv)"
+  az ad sp create --id "$APP_ID" -o none
+  echo "[OK] created $SP_NAME ($APP_ID)"
+fi
+SP_OID="$(az ad sp show --id "$APP_ID" --query id -o tsv)"
+if [ "$(az role assignment list --assignee "$SP_OID" --scope "$RG_ID" --role "$ONBOARD_ROLE" --query 'length(@)' -o tsv)" = "0" ]; then
+  az role assignment create --assignee-object-id "$SP_OID" --assignee-principal-type ServicePrincipal \
+    --role "$ONBOARD_ROLE" --scope "$RG_ID" -o none
+  echo "[OK] Azure Connected Machine Onboarding granted on $RG only"
+fi
+END="$(date -u -d '+1 day' +%Y-%m-%dT%H:%M:%SZ)"
+SP_SECRET="$(az ad app credential reset --id "$APP_ID" --end-date "$END" --query password -o tsv --only-show-errors)"
+ADMIN_PW="$(openssl rand -base64 48 | tr -dc 'A-Za-z0-9' | head -c 24)aA1."   # upper, lower, digit, symbol
+
+# Secrets go to the deployment as parameters, never into a file, so nothing secret lands on
+# disk. Your own shell's process list can see them while az runs, which is one reason the
+# onboarding secret is scoped to one role on one resource group and expires in a day.
+echo "[DEPLOY] creating or re-asserting the lab (10 to 15 minutes) ..."
+az deployment sub create --location "$LOC" --name "$NAME" --template-file "$WORK/main.bicep" \
+  --parameters adminPassword="$ADMIN_PW" sshPublicKey="$PUBKEY" arcSpAppId="$APP_ID" \
+               arcSpSecret="$SP_SECRET" location="$LOC" shutdownTimeZone="$SHUTDOWN_TZ" -o none
+unset ADMIN_PW SP_SECRET
+az deployment sub show --name "$NAME" --query "properties.outputs" -o jsonc
+
+# Read back through a different path than the one that wrote it.
+echo "[VERIFY] Azure VMs and power state:"
+az vm list -g "$RG" -d --query "[].{name:name, power:powerState, os:storageProfile.osDisk.osType}" -o table
+echo "[VERIFY] resource-level plans (Plan 1 expected on web01 and test01):"
+for vm in vm-glb-erp01 vm-glb-web01 vm-glb-test01; do
+  id="$(az vm show -g "$RG" -n "$vm" --query id -o tsv)"
+  az rest --method get --url "https://management.azure.com$id/providers/Microsoft.Security/pricings/virtualMachines?api-version=2024-01-01" \
+    --query "{vm:'$vm', tier:properties.pricingTier, subPlan:properties.subPlan, inherited:properties.inherited}" -o tsv
+done
+echo "[VERIFY] Arc machine (the host connects itself a few minutes after it boots):"
+# Ask for the machine by exact name: the generic resource-list endpoint has returned an empty
+# list even while an exact read showed the connected machine.
+az resource show -g "$RG" -n glb-dc-file01 --resource-type Microsoft.HybridCompute/machines --api-version 2024-07-10 \
+  --query "{name:name, status:properties.status}" -o table 2>/dev/null \
+  || echo "[INFO] glb-dc-file01 isn't registered yet. Check again in five minutes."
+echo "[VERIFY] host's own report, from the serial console:"
+az vm boot-diagnostics get-boot-log -g "$HOST_RG" -n vm-glb-arc-host01 2>/dev/null | grep 'GLOBOMANTICS-ARC' | tail -n 12 || true
+echo "[WAIT] Defender for Endpoint onboarding and the Defender for Cloud inventory run on their own cycles; give the portal views up to 24 hours."
+echo "[NEXT] Read the plans: pwsh -NoProfile -File ./Show-C3M02ServerPlans.ps1"
+echo "[NEXT] When you're done: MODE=teardown bash $(basename "$0")"

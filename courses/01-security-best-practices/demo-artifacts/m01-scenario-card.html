@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="only light">
+<title>Globomantics: the destructive-loss requirement</title>
+<!--
+  SC-100 Course 1, Module 1 demo: the scenario card that states Globomantics
+  leadership's destructive-loss requirement. Open it in any browser and press F11
+  for full screen. It makes no network requests, so it works offline.
+
+  ACCESSIBILITY: no meaning is carried by color alone. Every box is labeled, the
+  attacker path and the recovery path are distinguished by BORDER STYLE (solid vs
+  dashed) and by an explicit text label, not by hue. Reads correctly in greyscale
+  and to a red/green colorblind viewer.
+-->
+<style>
+  :root{
+    color-scheme:only light;
+    --darkBlue:#1B526D; --teal:#51B5B1; --tealLight:#BDFEF2;
+    --ink:#212121; --body:#555555; --grey:#9C9C9C; --white:#FFFFFF;
+  }
+  /* Chrome's auto-dark rewrites author colors on pages it decides are light.
+     Declaring the scheme on BOTH html and body, and repainting the surface
+     explicitly, keeps the artifact identical in every browser. */
+  html,body{background:#FFFFFF !important; color:#212121 !important;
+    forced-color-adjust:none; -webkit-print-color-adjust:exact; print-color-adjust:exact}
+  *{box-sizing:border-box}
+  html{font-size:clamp(10px, 0.72vh + 0.34vw, 19px)}
+  body{
+    margin:0; padding:1.98rem 3.60rem;
+    font-family:"Open Sans","Segoe UI",system-ui,sans-serif;
+    color:var(--ink); background:var(--white);
+    min-height:100vh; display:flex; flex-direction:column;
+  }
+  header{border-bottom:3px solid var(--darkBlue); padding-bottom:0.87rem; margin-bottom:1.61rem}
+  .eyebrow{
+    font-size:0.93rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--body); margin-bottom:.3.72rem;
+  }
+  h1{margin:0; font-size:2.23rem; font-weight:800; color:var(--darkBlue); line-height:1.15}
+  .flow{display:grid; grid-template-columns:1fr auto 1fr auto 1fr; align-items:stretch; gap:1.08rem; margin-bottom:1.86rem}
+  .node{border:3px solid var(--darkBlue); border-radius:6px; padding:1.12rem 1.26rem; background:var(--white)}
+  .node.attack{border-style:dashed; border-color:var(--ink)}
+  .node.recover{border-style:solid; border-color:var(--teal); background:var(--tealLight)}
+  .tag{
+    display:inline-block; font-size:0.78rem; font-weight:700; letter-spacing:.14em;
+    text-transform:uppercase; padding:.21.70rem .6.30rem; border-radius:3px; margin-bottom:0.62rem;
+    border:2px solid var(--ink); color:var(--ink);
+  }
+  .tag.asset{background:var(--darkBlue); border-color:var(--darkBlue); color:var(--white)}
+  .tag.threat{background:var(--white); border-style:dashed}
+  .tag.goal{background:var(--teal); border-color:var(--teal); color:var(--white)}
+  .node h2{margin:0 0 .4.96rem; font-size:1.30rem; font-weight:700; line-height:1.25}
+  .node p{margin:0; font-size:1.02rem; line-height:1.5; color:var(--body)}
+  .arrow{display:flex; align-items:center; font-size:1.86rem; font-weight:800; color:var(--grey)}
+  .req{border:3px solid var(--darkBlue); border-left-width:12px; border-radius:6px; padding:1.36rem 1.80rem; margin-bottom:1.49rem}
+  .req .label{font-size:0.87rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--body); margin-bottom:.5.58rem}
+  .req blockquote{margin:0; font-size:1.55rem; font-weight:600; line-height:1.4; color:var(--darkBlue)}
+  .facts{display:grid; grid-template-columns:repeat(3,1fr); gap:1.26rem; margin-top:auto}
+  .fact{border-top:4px solid var(--grey); padding-top:0.74rem}
+  .fact .k{font-size:0.81rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--body); margin-bottom:.3.10rem}
+  .fact .v{font-size:1.18rem; font-weight:600; line-height:1.35}
+  footer{margin-top:1.49rem; padding-top:0.74rem; border-top:1px solid var(--grey);
+    font-size:0.84rem; color:var(--body); display:flex; justify-content:space-between}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Globomantics &middot; Module 1 &middot; Beat 2</div>
+  <h1>What has to survive a destructive attack</h1>
+</header>
+
+<div class="flow">
+  <div class="node">
+    <span class="tag asset">Asset</span>
+    <h2>Customer-order data</h2>
+    <p>Order documents in Azure Blob Storage. Classified <strong>High</strong> business criticality. No orders, no shipments, no invoices.</p>
+  </div>
+
+  <div class="arrow" aria-hidden="true">&rarr;</div>
+
+  <div class="node attack">
+    <span class="tag threat">Threat &middot; dashed border</span>
+    <h2>Privileged compromise</h2>
+    <p>An attacker holds valid administrative credentials. Every backup operator at Globomantics carries standing domain admin.</p>
+  </div>
+
+  <div class="arrow" aria-hidden="true">&rarr;</div>
+
+  <div class="node recover">
+    <span class="tag goal">Requirement &middot; solid border</span>
+    <h2>Recovery that still works</h2>
+    <p>A copy the compromised administrator cannot reach, delete, or age out, plus a restore somebody has actually timed.</p>
+  </div>
+</div>
+
+<div class="req">
+  <div class="label">What leadership wrote down</div>
+  <blockquote>&ldquo;A compromised administrator must not be able to eliminate our retained recovery points.&rdquo;</blockquote>
+</div>
+
+<div class="facts">
+  <div class="fact">
+    <div class="k">Stated downtime tolerance</div>
+    <div class="v">40 hours, never validated</div>
+  </div>
+  <div class="fact">
+    <div class="k">Last tested restore</div>
+    <div class="v">18 months ago</div>
+  </div>
+  <div class="fact">
+    <div class="k">Protection today</div>
+    <div class="v">Operational backup only, on the source account</div>
+  </div>
+</div>
+
+<footer>
+  <span>Globomantics &middot; SC-100 Course 1 &middot; Design ransomware resilience</span>
+  <span>Ransomware is the pressure test, not the topic</span>
+</footer>
+
+</body>
+</html>

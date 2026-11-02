@@ -1,0 +1,31 @@
+# .gitignore for the SC-100 study toolkit.
+#
+# The corpus is Microsoft's copyrighted training content. You download it to your own
+# machine for personal study, and this repository never redistributes it. These rules
+# make sure nothing downloaded or generated from it can be committed by accident.
+
+# --- The downloaded corpus: everything except the README that explains it ----------
+corpus/*
+!corpus/README.md
+
+# --- Generated from the corpus: chunks, objective table, vector store, snapshots ---
+index/
+
+# --- The downloader clone and any other tool cache ---------------------------------
+.cache/
+
+# --- Local configuration. .env.example is the committed template ------------------
+.env
+.env.*
+!.env.example
+
+# --- Python ---------------------------------------------------------------------------
+.venv/
+__pycache__/
+*.py[cod]
+.ruff_cache/
+.pytest_cache/
+
+# --- Editor and OS clutter ----------------------------------------------------------
+.DS_Store
+Thumbs.db
